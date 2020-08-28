@@ -111,25 +111,30 @@ class VideoCrawler(object):
                             
                         # busy loop delay
                         sleep(1)
-                        
-                        # check video state again
-                        new_ps = self.driver.execute_script(js)
 
-                        # print progress updates every time the video state changes
-                        # or on the screenshot interval
-                        ts_new = time()
-                        if player_status != new_ps or ts_new - ts > cm.SCREENSHOT_INTERVAL:
-                            wl_log.debug('youtube status: {} for {:.2f} seconds'
+                        try:
+
+                            # check video state again
+                            new_ps = self.driver.execute_script(js)
+
+                            # print progress updates every time the video state changes
+                            # or on the screenshot interval
+                            ts_new = time()
+                            if player_status != new_ps or ts_new - ts > cm.SCREENSHOT_INTERVAL:
+                                wl_log.debug('youtube status: {} for {:.2f} seconds'
                                          .format(status_to_string[player_status], ts_new - ts))
-                            ts = ts_new
-                            # take periodic screenshots
-                            if self.screenshots:
-                                try:
-                                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                                    screenshot_count += 1
-                                except WebDriverException:
-                                    wl_log.error("Cannot get screenshot.")
-                            player_status = new_ps
+                                ts = ts_new
+                                # take periodic screenshots
+                                if self.screenshots:
+                                    try:
+                                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                                        screenshot_count += 1
+                                    except WebDriverException:
+                                        wl_log.error("Cannot get screenshot.")
+                                player_status = new_ps
+                        except Exception as e:
+                            pass
+                                
 
             except (cm.HardTimeoutException, TimeoutException):
                 wl_log.error("Visit to %s reached hard timeout!", self.job.url)

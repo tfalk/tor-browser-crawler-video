@@ -43,9 +43,11 @@ class Sniffer(object):
         if pcap_path:
             self.set_pcap_path(pcap_path)
         prefix = ""
-        command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
-            .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
-                    self.pcap_filter, self.pcap_file)
+        command = '{}tcpdump -G {} -i {} -w {} \'{}\'' \
+                .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
+        #command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
+        #    .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
+        #            self.pcap_filter, self.pcap_file)
         wl_log.info(command)
         if dumpcap_log:
             log_fi = open(dumpcap_log, "w+")
@@ -67,10 +69,10 @@ class Sniffer(object):
         self.is_recording = True
 
     def is_dumpcap_running(self):
-        if "dumpcap" in psutil.Process(self.p0.pid).cmdline():
+        if "tcpdump" in psutil.Process(self.p0.pid).cmdline():
             return self.p0.returncode is None
         for proc in ut.gen_all_children_procs(self.p0.pid):
-            if "dumpcap" in proc.cmdline():
+            if "tcpdump" in proc.cmdline():
                 return True
         return False
 
