@@ -5,6 +5,8 @@ from time import sleep, time
 
 from selenium.common.exceptions import TimeoutException, WebDriverException
 from selenium.webdriver.common.by import By
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.action_chains import ActionChains
 
 import tbcrawler.common as cm
 import tbcrawler.utils as ut
@@ -77,64 +79,90 @@ class VideoCrawler(object):
                 with ut.timeout(cm.HARD_VISIT_TIMEOUT):
                     # begin loading page
                     self.driver.get(self.job.url)
-
-                    # take first screenshot
-                    if self.screenshots:
-                        try:
-                            self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                            screenshot_count += 1
-                        except WebDriverException:
-                            wl_log.error("Cannot get screenshot.")
-
-                    # check video player status
-                    status_to_string = ['ended', 'played', 'paused', 'buffered', 'queued', 'unstarted']
+                    
+                    status_to_string = ['ended', 'playing', 'paused', 'buffering', 'none', 'queued', 'unstarted']
                     js = "return document.getElementById('movie_player').getPlayerState()"
-                    player_status = self.driver.execute_script(js)
-
-                    # continue visit capture until video is has fully played
-                    ts = time()
-                    while player_status != 0:
-
-                        # attempt to simulate user skipping add
-                        if player_status == -1:
-                            try:
-                                skipAds = self.driver.find_elements(By.XPATH, "//button[@class=\"ytp-ad-skip-button ytp-button\"]")
-                                wl_log.info(len(skipAds))
-                                for skipAd in skipAds:
-                                    skipAd.click()
-                            except WebDriverException as e:
-                                pass
-
-                        # unpause video if state is unstarted or is for some reason paused
-                        if player_status == -1 or player_status == 2:
-                            self.driver.execute_script("return document.getElementById('movie_player').playVideo()")
-                            
-                        # busy loop delay
-                        sleep(1)
-
+                    player_status = 4
+                    time_0 = time()
+                    time_now = time_0
+                    time_last_checks = time_0
+                    
+                    # try a few times to get an initial player status
+                    while player_status == 4:
+                        time_now = time()
                         try:
-
-                            # check video state again
-                            new_ps = self.driver.execute_script(js)
-
-                            # print progress updates every time the video state changes
-                            # or on the screenshot interval
-                            ts_new = time()
-                            if player_status != new_ps or ts_new - ts > cm.SCREENSHOT_INTERVAL:
-                                wl_log.debug('youtube status: {} for {:.2f} seconds'
-                                         .format(status_to_string[player_status], ts_new - ts))
-                                ts = ts_new
-                                # take periodic screenshots
+                            wl_log.info("Trying to get player status.")
+                            player_status = self.driver.execute_script(js)
+                        except WebDriverException as e:
+                            wl_log.error(str(e))
+                            if time_now - time_0 > 20:
+                                wl_log.info("Terminating visit after the third try.")
+                                wl_log.info("Probably on the 'detected unusual traffic' page.")
                                 if self.screenshots:
+                                    wl_log.info("Trying to take a screenshot.")
                                     try:
                                         self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                                        screenshot_count += 1
-                                    except WebDriverException:
-                                        wl_log.error("Cannot get screenshot.")
-                                player_status = new_ps
-                        except Exception as e:
-                            pass
-                                
+                                    except WebDriverException as e:
+                                        wl_log.error(str(e))
+                                return
+                            sleep(10)
+                            
+                    loaded_fraction = 0
+                    # continue the visit capture until the video has fully loaded
+                    while loaded_fraction < 1:
+                        time_now = time()
+                        # check progress on the screenshot interval
+                        if time_now - time_last_checks > cm.SCREENSHOT_INTERVAL:
+                            try:
+                                player_status = self.driver.execute_script(js)
+                                wl_log.debug('youtube status: {} at {:.2f} seconds'
+                                             .format(status_to_string[player_status], time_now - time_0))
+                            except Exception as e:
+                                wl_log.error("Cannot get player status at 30-second interval.")
+                            # try a few things if the video isn't playing
+                            if player_status == -1 or player_status == 2:
+                                try:
+                                    # accept all cookies
+                                    wl_log.info("Trying to accept cookies.")
+                                    ActionChains(self.driver).send_keys(Keys.TAB * 6 + Keys.ENTER).perform()
+                                    sleep(5)
+                                    player_status = self.driver.execute_script(js)
+                                except WebDriverException as e:
+                                    wl_log.error(str(e))
+                            if player_status == -1 or player_status == 2:
+                                try:
+                                    # press play
+                                    wl_log.info("Trying to press play.")
+                                    ActionChains(self.driver).send_keys('k').perform()
+                                    sleep(5)
+                                    player_status = self.driver.execute_script(js)
+                                except WebDriverException as e:
+                                    wl_log.error(str(e))
+                            if player_status == -1 or player_status == 2:
+                                try:
+                                    # skip ad
+                                    wl_log.info("Trying to skip ads.")
+                                    skipAds = self.driver.find_elements(By.XPATH, "//button[@class=\"ytp-ad-skip-button ytp-button\"]")
+                                    for skipAd in skipAds:
+                                        skipAd.click()
+                                    sleep(5)
+                                    player_status = self.driver.execute_script(js)
+                                except WebDriverException as e:
+                                    wl_log.error(str(e))
+                            # take periodic screenshot
+                            if self.screenshots:
+                                try:
+                                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                                    screenshot_count += 1
+                                except WebDriverException:
+                                    wl_log.error("Cannot get screenshot.")
+                            # get the fraction of the video loaded now, hopefully with initial ads skipped
+                            try:
+                                loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
+                                wl_log.debug('youtube video loaded fraction: ' + str(loaded_fraction))
+                            except WebDriverException:
+                                wl_log.error(str(e))
+                            time_last_checks = time_now      
 
             except (cm.HardTimeoutException, TimeoutException):
                 wl_log.error("Visit to %s reached hard timeout!", self.job.url)
