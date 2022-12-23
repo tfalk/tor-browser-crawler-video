@@ -6,26 +6,26 @@ The original fork was by Nate Mathews. Danny Campuzano forked it from him. I for
 
 #### Steps
 1. Install Docker
-        ```
-        sudo apt-get install ca-certificates curl gnupg lsb-release
-        sudo mkdir -p /etc/apt/keyrings
-        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        sudo apt-get update
-        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-        sudo usermod -aG docker $USER
-        sudo systemctl enable docker.service
-        systemctl disable containerd.service
-        ```
+```
+sudo apt-get install ca-certificates curl gnupg lsb-release
+sudo mkdir -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt-get update
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+sudo usermod -aG docker $USER
+sudo systemctl enable docker.service
+systemctl disable containerd.service
+```
 2. Install Tor
-        `sudo apt install tor`
-    Change `RUN_DAEMON="yes"` to `RUN_DAEMON="no"` in `/etc/default/tor`
-        `systemctl stop tor`
+`sudo apt install tor`
+Change `RUN_DAEMON="yes"` to `RUN_DAEMON="no"` in `/etc/default/tor`
+`systemctl stop tor`
 3. Build the Docker container
-        ```
-        sudo apt install make
-        sudo make build
-        ```
+```
+sudo apt install make
+sudo make build
+```
 4. Setup your crawl configuration files
     * replace the contents of videos.txt with your list of YouTube URLs to crawl
     * edit Makefile to use the correct network interface (find yours with `ip link`)
