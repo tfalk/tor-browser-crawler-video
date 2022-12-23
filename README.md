@@ -1,41 +1,46 @@
 tor-browser-crawler-video
 ===============
-![DISCLAIMER](https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Dialog-warning-orange.svg/40px-Dialog-warning-orange.svg.png "experimental")  **experimental - PLEASE BE CAREFUL. Intended for reasearch purposes.**
 
 This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler).
-The project has been revised such that instead of capturing webpage loads, this crawler captures video loads.
-
-## Usage
-
-This project may be run natively on the host system or in a docker container.
-If running natively, the required libraries and python 2.7 modules must be installed.
-Reference the ``Dockerfile`` and ``requirements.txt`` for the list of requirements.
-Running through docker is easier and more reproducible. 
-As such, this section will focus on the docker container setup.
+The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it from Danny to update it for YouTube's interface in late 2022. I am running Ubuntu 22.04 on a VM with 2 CPUs and 1 GB of RAM.
 
 #### Steps
-1. Install Docker
-    * follow [their documentation](https://docs.docker.com/install/)
-    * don't forget to add your user to the ``docker`` group after install
-2. Build the docker container
-    * install the ``make`` utility if it is not native on your system
-    * run ``make build`` to compile the docker image
-3. Setup your crawl configuration files
-    * replace ``videos.txt`` with your list of youtube urls
-    * edit ``Makefile`` to use the correct network interface
-    * if you are crawling long videos, adjust the ``--timeout`` value in the ``Makefile``
-    * make any desired changes to ``config.ini`` 
-4. Start the crawl
-    * run ``make run`` to launch a container
-    * the logs and packet captures should appear in the newly created ``results`` directory
-    
+1. Install Docker 
+        sudo apt-get install ca-certificates curl gnupg lsb-release
+        sudo mkdir -p /etc/apt/keyrings
+        curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+        echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+        sudo apt-get update
+        sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+        sudo usermod -aG docker $USER
+        sudo systemctl enable docker.service
+        systemctl disable containerd.service
+2. Install Tor
+        sudo apt install tor
+        Change RUN_DAEMON="yes" to RUN_DAEMON="no" in /etc/default/tor
+        systemctl stop tor
+3. Build the Docker container
+        sudo apt install make
+        sudo make build
+4. Setup your crawl configuration files
+    * replace the contents of ``videos.txt`` with your list of YouTube URLs to crawl
+    * edit ``Makefile`` to use the correct network interface (find yours with ``ip link``)
+    * if you're crawling long videos, adjust the ``--timeout`` value in the ``Makefile``
+    * make any desired changes to ``config.ini``
+5. Start the crawl
+    * ``make run`` launches a container and starts crawling
+    * the logs, packet captures, and screenshots appear in the ``results`` directory
+
 ## Notes
 * Library Versions
-    * versions of some components are important as different version combinations may be incompatible
-    * this project has been frozen to **v8.0.2** of the TBB
-    * to use the latest TBB version, remove the version number from the ``dockerfile``
-    * newer versions of TBB may however require different version of selenium and geckodriver
+    * most of the modules listed in requirements.txt are the last versions that supported Python 2.7
+    * this project was originally frozen to v8.0.2 of the TBB, and I've changed it to v12.0.1
+    * to use another TBB version, change the version number in ``Dockerfile`` and do another ``sudo make build``
+    * leaving the version number blank to get the latest version of TBB no longer works
 
-* PCAP Size Limit
-    * the crawler is configured to capture up to ~120MB per video
-    * if this limit is inadequate, adjust ``MAX_DUMP_SIZE`` in the ``common.py`` source file
+* About 50% of the time, YouTube will serve up a page saying ``detected unusual traffic`` and you can't get around it until you build another Tor 
+circuit with a new exit relay. The other 50% of the time, you'll get a ``Before you continue to YouTube`` banner about cookies once the page finally loads, and much of the logic I changed deals with this. Very rarely, the video just loads and starts on autoplay without intervention.
+
+* I changed the trigger for when to end a packet capture. It used to be when the player status was ``ended`` but now it looks for when the video is fully loaded, even though the video itself is still playing. This is because we're only interested in the network traffic.
+
+* The default Docker settings often resulted in Selenium errors saying ``failed to decode response from marionette`` and ``tried to run command without establishing a connection`` even though the page and video were loading. The fix was to give the container higher runtime constraints on resources, specifically memory and shared host memory. This is included in the ``run`` command in the ``Makefile``

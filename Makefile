@@ -25,7 +25,7 @@ VOLUMES = \
 
 
 # network interface on which to listen
-DEVICE=ens33
+DEVICE=enp1s0
 
 # commandline arguments
 CRAWL_PARAMS=-c wang_and_goldberg -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v
@@ -35,7 +35,7 @@ build:
 	@docker build -t tbcrawl --rm .
 
 run:
-	@docker run -it --rm ${ENV_VARS} ${VOLUMES} --net host --privileged \
+	@docker run -it --rm ${ENV_VARS} ${VOLUMES} --net host --privileged --memory 1024mb --shm-size 1024mb \
 	tbcrawl ${CRAWL_PATH}/Entrypoint.sh "./bin/tbcrawler.py $(CRAWL_PARAMS)" ${DEVICE}
 
 stop:
