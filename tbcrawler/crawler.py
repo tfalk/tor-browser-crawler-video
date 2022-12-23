@@ -124,7 +124,7 @@ class VideoCrawler(object):
                                 try:
                                     # accept all cookies
                                     wl_log.info("Trying to accept cookies.")
-                                    ActionChains(self.driver).send_keys(Keys.TAB * 6 + Keys.ENTER).perform()
+                                    ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
                                     sleep(5)
                                     player_status = self.driver.execute_script(js)
                                 except WebDriverException as e:
