@@ -11,6 +11,6 @@ __pycache__
 .vagrant/
 playbook.retry
 *.swp
-/tor-browser_en-US/
+/tor-browser/
 /*.json
 *~

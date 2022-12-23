@@ -28,7 +28,7 @@ RUN tar -zxvf /bin/geckodriver* -C /bin/
 ENV PATH /bin/geckodriver:$PATH
 
 # add setup.py
-RUN git clone https://gist.github.com/notem/4242fe5c7f8dd6c443cab3d4ca38b85b.git /home/docker/tbb_setup
+RUN git clone https://gist.github.com/timwalsh300/e611e4e18e4e5911eee0b3252318804d.git /home/docker/tbb_setup
 RUN python /home/docker/tbb_setup/setup.py 12.0.1
 
 # Set the display

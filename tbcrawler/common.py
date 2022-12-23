@@ -44,7 +44,7 @@ DEFAULT_CRAWL_LOG = join(LOGS_DIR, 'crawl.log')
 DEFAULT_TOR_LOG = join(LOGS_DIR, 'tor.log')
 DEFAULT_FF_LOG = join(LOGS_DIR, 'ff.log')
 TEST_DIR = join(SRC_DIR, 'test')
-TBB_DIR = join(BASE_DIR, 'tor-browser_en-US')
+TBB_DIR = join(BASE_DIR, 'tor-browser')
 VIDEO_LIST = join(BASE_DIR, "videos.txt")
 
 # PCAP capture filter

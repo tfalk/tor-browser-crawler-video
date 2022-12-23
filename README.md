@@ -2,7 +2,7 @@ tor-browser-crawler-video
 ===============
 
 This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler).
-The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it from Danny to update it for YouTube's interface in late 2022. I'm running Ubuntu 22.04 on a VM with 2 CPUs and 1 GB of RAM.
+The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it from Danny to update it for YouTube's interface in late 2022. I'm running Ubuntu Server 22.04 on a VM with 2 CPUs and 1 GB of RAM.
 
 #### Steps
 1. Install Docker

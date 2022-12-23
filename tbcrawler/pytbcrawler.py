@@ -146,7 +146,7 @@ def parse_url_list(file_path, start, stop):
                     url = 'https://www.youtube.com/watch?v=' + token
                 # stop autoplay and related videos
                 # youtube may ignore these parameters
-                url += '&autoplay=0&rel=0'
+                # url += '&autoplay=0&rel=0'
                 processed_list.append(url)
     except Exception as e:
         wl_log.error("while parsing URL list: {} \n{}".format(e, traceback.format_exc()))
