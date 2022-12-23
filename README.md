@@ -18,9 +18,13 @@ sudo systemctl enable docker.service
 systemctl disable containerd.service
 ```
 2. Install Tor
+
 `sudo apt install tor`
+
 Change `RUN_DAEMON="yes"` to `RUN_DAEMON="no"` in `/etc/default/tor`
+
 `systemctl stop tor`
+
 3. Build the Docker container
 ```
 sudo apt install make
@@ -43,7 +47,7 @@ sudo make build
     * leaving the version number blank to get the latest version of TBB no longer works
 
 * About 50% of the time, YouTube will serve up a page saying `detected unusual traffic` and you can't get around it until you build another Tor 
-circuit with a new exit relay. The other 50% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads, and much of the logic I changed deals with this. Very rarely, the video just loads and starts on autoplay without intervention.
+circuit with a new exit relay. The other 50% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads,  preventing more than about 6 MB of the video from loading and playing, so much of the logic in crawler.py that I'm changing deals with this. Very rarely, the video does just load and start on autoplay without intervention.
 
 * I changed the trigger for when to end a packet capture. It used to be when the player status was `ended` but now it looks for when the video is fully loaded, even though the video itself is still playing. This is because we're only interested in the network traffic.
 
