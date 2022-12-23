@@ -17,25 +17,18 @@ sudo usermod -aG docker $USER
 sudo systemctl enable docker.service
 systemctl disable containerd.service
 ```
-2. Install Tor
 
-`sudo apt install tor`
-
-Change `RUN_DAEMON="yes"` to `RUN_DAEMON="no"` in `/etc/default/tor`
-
-`systemctl stop tor`
-
-3. Build the Docker container
+2. Build the Docker container
 ```
 sudo apt install make
 sudo make build
 ```
-4. Setup your crawl configuration files
+3. Setup your crawl configuration files
     * replace the contents of videos.txt with your list of YouTube URLs to crawl
     * edit Makefile to use the correct network interface (find yours with `ip link`)
     * if you're crawling long videos, adjust the `--timeout` value in Makefile
     * make any desired changes to config.ini
-5. Start the crawl
+4. Start the crawl
     * `make run` launches a container and starts crawling
     * the logs, packet captures, and screenshots appear in the `results` directory
 
