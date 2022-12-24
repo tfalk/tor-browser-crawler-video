@@ -43,7 +43,7 @@ class Sniffer(object):
         if pcap_path:
             self.set_pcap_path(pcap_path)
         prefix = ""
-        command = '{}tcpdump -G {} -i {} -w {} \'{}\'' \
+        command = '{}tcpdump -G {} -i {} -s 34 -w {} \'{}\'' \
                 .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
         #command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
         #    .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
@@ -63,7 +63,7 @@ class Sniffer(object):
         if timeout < 0:
             raise DumpcapTimeoutError()
         else:
-            wl_log.debug("dumpcap started in %s seconds" %
+            wl_log.debug("tcpdump started in %s seconds" %
                          (DUMPCAP_START_TIMEOUT - timeout))
 
         self.is_recording = True
@@ -82,12 +82,12 @@ class Sniffer(object):
         self.p0.kill()
         self.is_recording = False
         if os.path.isfile(self.pcap_file):
-            wl_log.info('Dumpcap killed. Capture size: %s Bytes %s' %
+            wl_log.info('tcpdump killed. Capture size: %s Bytes %s' %
                         (os.path.getsize(self.pcap_file), self.pcap_file))
         else:
-            wl_log.warning('Dumpcap killed but cannot find capture file: %s'
+            wl_log.warning('tcpdump killed but cannot find capture file: %s'
                            % self.pcap_file)
-            wl_log.warning('Check %s for dumpcap error information!'
+            wl_log.warning('Check %s for tcpdump error information!'
                            % self.log)
 
     def __enter__(self):
