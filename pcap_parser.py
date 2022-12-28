@@ -46,7 +46,7 @@ def parse_pcap_ip(path, adjust_times=True):
             # save initial start time
             if start_time is None:
                 start_time = timestamp
-            length = len(packet)
+            length = packet.wirelen
 
             # add to sequence
             sequence.append((timestamp, direction * length))
