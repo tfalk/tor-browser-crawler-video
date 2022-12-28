@@ -6,6 +6,7 @@ from os.path import exists
 from shutil import copyfile
 
 from scapy.all import PcapReader, wrpcap
+from scapy.layers.inet import IP
 
 import psutil
 from tbcrawler.common import TimeoutException
@@ -54,10 +55,11 @@ def filter_pcap(pcap_path, iplist):
     copyfile(pcap_path, orig_pcap)
     with PcapReader(orig_pcap) as preader:
         for p in preader:
-            if 'TCP' in p:
+            if IP in p:
                 ip = p.payload
-                if ip.dst in iplist or ip.src in iplist:
-                    pcap_filtered.append(p)
+                if ip.proto == 6:
+                    if ip.dst in iplist or ip.src in iplist:
+                        pcap_filtered.append(p)
     wrpcap(pcap_path, pcap_filtered)
 
 
