@@ -1,4 +1,4 @@
-tor-browser-crawler-video
+tor-browser-crawler-youtube
 ===============
 
 This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler).
