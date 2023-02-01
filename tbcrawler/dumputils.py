@@ -43,7 +43,7 @@ class Sniffer(object):
         if pcap_path:
             self.set_pcap_path(pcap_path)
         prefix = ""
-        command = '{}tcpdump -G {} -i {} -s 66 -w {} \'{}\'' \
+        command = '{}tcpdump -G {} -i {} -s 71 -w {} \'{}\'' \
                 .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
         #command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
         #    .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
