@@ -32,7 +32,7 @@ def run():
     build_crawl_dirs(args.url_file)
 
     # Read URLs
-    url_list = parse_url_list(args.url_file, args.start, args.stop)
+    url_dict = parse_video_list(args.url_file, args.start, args.stop)
 
     # Configure logger
     add_log_file_handler(wl_log, cm.DEFAULT_CRAWL_LOG)
@@ -56,7 +56,7 @@ def run():
 
     # Configure crawl
     job_config = ut.get_dict_subconfig(config, args.config, "job")
-    job = crawler_mod.CrawlJob(job_config, url_list)
+    job = crawler_mod.CrawlJob(job_config, url_dict)
 
     # Setup stem headless display
     if args.virtual_display:
@@ -101,57 +101,26 @@ def build_crawl_dirs(video_file):
     copyfile(video_file, join(cm.LOGS_DIR, 'videos.txt'))
     add_symlink(join(cm.RESULTS_DIR, 'latest_crawl'), basename(cm.CRAWL_DIR))
 
-
-def youtube_url_validation(url):
-    youtube_regex = (
-        r'(https?://)?(www\.)?'
-        '(youtube|youtu|youtube-nocookie)\.(com|be)/'
-        '(watch\?v=|embed/|v/|.+\?v=)?([^&=%\?]{11})'
-    )
-    youtube_regex_match = re.match(youtube_regex, url)
-    if youtube_regex_match:
-        return youtube_regex_match.group(6)
-    return youtube_regex_match
-
-
-def youtube_id_validation(string):
-    id_regex = r'^[^&=%\?]{11}$'
-    if re.match(id_regex, string):
-        return True
-    return False
-
-
-def parse_url_list(file_path, start, stop):
-    """Return list of urls from a file."""
+def parse_video_list(file_path, start, stop):
+    """Return list of videos from a file."""
     try:
         with open(file_path) as f:
-            # read file contents and split into elements
+            # read file contents and split entries of the form url,length_in_seconds
             file_contents = f.read()
             url_list = file_contents.splitlines()
             url_list = [url for url in url_list if url and not url.startswith('#')]
             url_list = url_list[start - 1:stop]
-            # process urls and tokens into valid youtube video strings
-            processed_list = []
-            for url in url_list:
-                parsed = urlparse(url)
-                # if no hostname, assume string is the video ID
-                if not parsed.hostname:
-                    if not youtube_id_validation(url):
-                        raise ValueError('Token is not a valid youtube video ID: {}'.format(url))
-                    url = 'https://www.youtube.com/watch?v=' + url
-                else:
-                    token = youtube_url_validation(url)
-                    if not token:
-                        raise ValueError('Not a valid youtube URL: {}'.format(url))
-                    url = 'https://www.youtube.com/watch?v=' + token
-                # stop autoplay and related videos
-                # youtube may ignore these parameters
-                # url += '&autoplay=0&rel=0'
-                processed_list.append(url)
+            url_dict = {}
+            i = 0
+            for entry in url_list:
+                parts = entry.split(',')
+                url = parts[0]
+                url_dict[i] = (url, int(parts[1]))
+                i += 1
     except Exception as e:
-        wl_log.error("while parsing URL list: {} \n{}".format(e, traceback.format_exc()))
+        wl_log.error("while parsing video list: {} \n{}".format(e, traceback.format_exc()))
         sys.exit(-1)
-    return processed_list
+    return url_dict
 
 
 def parse_arguments():
@@ -160,7 +129,7 @@ def parse_arguments():
     config.read(cm.CONFIG_FILE)
 
     # Parse arguments
-    parser = argparse.ArgumentParser(description='Crawl a list of youtube URLs in multiple batches.')
+    parser = argparse.ArgumentParser(description='Crawl a list of URLs in multiple batches.')
 
     # List of urls to be crawled
     parser.add_argument('-u', '--url-file', required=True,

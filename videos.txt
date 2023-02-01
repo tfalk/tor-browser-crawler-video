@@ -1,20 +1,13 @@
-# lines beginning with pound are ignored (like python)
-# this can be used for documentation
+# Use the full URL
+# followed by a comma and the
+# duration of the video in seconds
 
-# crawler works on youtube video links
-# here are some examples:
-https://www.youtube.com/watch?v=IC4wxEF-tSg
-https://www.youtube.com/watch?v=qVt_Z_PGR80
-https://www.youtube.com/watch?v=nM4I0tkayok
-
-# some non-standard url forms are supported
-# urls are always reformatted into the standard youtube url format
-# http://youtu.be/Raf9bVk75s8
-# http://youtube.com/embed/gUTtJjV852c
-# http://www.youtube-nocookie.com/v/4vWg5yJuWfs
-
-# video ID can also be used
-# ruE75y1Jg_s
-# -_DJEzZk2pc
-# jNVZjNB8ptk
-
+https://www.youtube.com/watch?v=IC4wxEF-tSg,300
+https://www.dailymotion.com/video/x4jz91j,30
+https://vimeo.com/165393371,349
+https://www.youtube.com/watch?v=H08MMzbBj60,255
+https://www.dailymotion.com/video/x8h0i3d,159
+https://vimeo.com/166099057,96
+https://www.youtube.com/watch?v=fX_dL5sPCmU,263
+https://www.dailymotion.com/video/x8h4ope,229
+https://vimeo.com/248059961,207
