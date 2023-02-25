@@ -101,19 +101,19 @@ class VideoCrawler(object):
         while player_status == 4:
             time_now = time()
             try:
-                wl_log.info("Trying to get player status.")
+                wl_log.info('Trying to get initial player status.')
                 player_status = self.driver.execute_script(js)
             except WebDriverException as e:
-                wl_log.error(str(e))
+                wl_log.error('Failed to get player status')
                 if time_now - time_0 > 20:
-                    wl_log.info("Terminating visit after the third try.")
-                    wl_log.info("Probably on the 'detected unusual traffic' page.")
+                    wl_log.info('Terminating visit after the third try.')
+                    wl_log.info('Probably on the \'detected unusual traffic\' page.')
                     if self.screenshots:
-                        wl_log.info("Trying to take a screenshot.")
+                        wl_log.info('Trying to take a screenshot.')
                         try:
                             self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
                         except WebDriverException as e:
-                            wl_log.error(str(e))
+                            wl_log.error('Cannot get screenshot.')
                     return
                 sleep(10)
 
@@ -125,15 +125,15 @@ class VideoCrawler(object):
             if time_now - time_last_checks > cm.SCREENSHOT_INTERVAL:
                 try:
                     player_status = self.driver.execute_script(js)
-                    wl_log.debug('youtube status: {} at {:.2f} seconds'
+                    wl_log.debug('Player status: {} at {:.2f} seconds'
                                  .format(status_to_string[player_status], time_now - time_0))
                 except Exception as e:
-                    wl_log.error("Cannot get player status at 30-second interval.")
+                    wl_log.error('Failed to get player status at 30-second interval.')
                 # try a few things if the video isn't playing
                 if player_status == -1 or player_status == 2:
                     try:
                         # accept all cookies
-                        wl_log.info("Trying to accept cookies.")
+                        wl_log.info('Trying to accept cookies.')
                         ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
                         sleep(5)
                         player_status = self.driver.execute_script(js)
@@ -142,7 +142,7 @@ class VideoCrawler(object):
                 if player_status == -1 or player_status == 2:
                     try:
                         # press play
-                        wl_log.info("Trying to press play.")
+                        wl_log.info('Trying to press play.')
                         ActionChains(self.driver).send_keys('k').perform()
                         sleep(5)
                         player_status = self.driver.execute_script(js)
@@ -151,7 +151,7 @@ class VideoCrawler(object):
                 if player_status == -1 or player_status == 2:
                     try:
                         # skip ad
-                        wl_log.info("Trying to skip ads.")
+                        wl_log.info('Trying to skip ads.')
                         skip_button_xpath = "//button[@class=\"ytp-ad-skip-button ytp-button\"]"
                         WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, skip_button_xpath))).click()
                         sleep(5)
@@ -164,7 +164,7 @@ class VideoCrawler(object):
                         self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
                         screenshot_count += 1
                     except WebDriverException:
-                        wl_log.error("Cannot get screenshot.")
+                        wl_log.error('Cannot get screenshot.')
                 # get the fraction of the video loaded now, hopefully with initial ads skipped
                 try:
                     loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
@@ -185,7 +185,7 @@ class VideoCrawler(object):
             # Dailymotion will autoplay, but we'll wait for some elements to load before we
             # start the clock, so we don't end the capture too early
             wl_log.info("Waiting up to 60 seconds for the cookie policy to appear.")
-            understand_button_xpath = "/html/body/div[1]/div/div[3]/button"
+            understand_button_xpath = "/html/body/div[1]/div/div[2]/button"
             WebDriverWait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, understand_button_xpath)))
         # take a screenshot and then repeat every 20 seconds
         # until the expected time required has elapsed
