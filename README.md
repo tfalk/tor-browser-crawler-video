@@ -29,15 +29,15 @@ sudo make build
     * if you're crawling long videos, adjust the `--timeout` value in Makefile
     * make any desired changes to config.ini
 4. Start the crawl
-    * `make run` launches a container and starts crawling
+    * `sudo make run` launches a container and starts crawling
     * the logs, packet captures, and screenshots appear in the `results` directory
 
 ## Notes
-* Library Versions
-    * most of the modules listed in requirements.txt are the last versions that supported Python 2.7
-    * this project was originally frozen to v8.0.2 of the TBB, and I've changed it to v12.0.1
-    * to use another TBB version, change the version number in Dockerfile and do another `sudo make build`
-    * leaving the version number blank to get the latest version of TBB no longer works
+* Software and Library Versions
+    * I've updated everything from Python 2.7 to 3.11 and the latest selenium, tbselenium, and geckodriver
+    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3
+    * To use another TBB version, change the version number in Dockerfile and do another `sudo make build`
+    * Leaving the version number blank to get the latest version of TBB no longer works
 
 * About 30% of the time, YouTube will serve up a page saying `detected unusual traffic` and you can't get around it until you build another Tor 
 circuit with a new exit relay (this was more like 50% when using the older TBB v8.0.2). The other 70% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads, preventing more than about 6 MB of the video from loading and playing, so much of the logic in crawler.py that I'm changing deals with this. Very rarely, the video does just load and start on autoplay without intervention.
