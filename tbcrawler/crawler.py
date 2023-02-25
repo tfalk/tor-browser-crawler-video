@@ -60,7 +60,8 @@ class VideoCrawler(object):
     def _do_instance(self):
         for self.job.visit in range(self.job.visits):
             ut.create_dir(self.job.path)
-            wl_log.info("*** Visit #%s to %s ***", self.job.visit, self.job.url)
+            wl_log.info("*** Visit %s to %s ***", self.job.visit, self.job.url)
+            wl_log.info("*** Expected playback time is %s seconds ***", self.job.playback_time)
             self.job.screen_num = 0
             with self.driver.launch():
                 try:
