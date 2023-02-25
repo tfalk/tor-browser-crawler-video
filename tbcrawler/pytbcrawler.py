@@ -1,5 +1,5 @@
 import argparse
-import ConfigParser
+import configparser
 import sys
 import traceback
 from contextlib import contextmanager
@@ -8,7 +8,7 @@ from os import stat, chdir
 from os.path import isfile, join, basename
 from shutil import copyfile
 from sys import maxsize, argv
-from urlparse import urlparse
+from urllib.parse import urlparse
 import re
 
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
@@ -125,7 +125,7 @@ def parse_video_list(file_path, start, stop):
 
 def parse_arguments():
     # Read configuration file
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     config.read(cm.CONFIG_FILE)
 
     # Parse arguments
@@ -212,9 +212,7 @@ class TorBrowserWrapper(object):
 
     @contextmanager
     def launch(self):
-        caps = DesiredCapabilities().FIREFOX
-        caps['pageLoadStrategy'] = 'eager'
-        self.driver = TorBrowserDriver(*self.args, capabilities=caps, **self.kwargs)
+        self.driver = TorBrowserDriver(*self.args, **self.kwargs)
         yield self.driver
         self.driver.quit()
 

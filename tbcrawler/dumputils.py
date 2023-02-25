@@ -56,6 +56,7 @@ class Sniffer(object):
         else:
             self.p0 = subprocess.Popen(command, stdout=subprocess.PIPE,
                                        stderr=subprocess.PIPE, shell=True)
+        print('self.p0.pid is ' + str(self.p0.pid))
         timeout = DUMPCAP_START_TIMEOUT  # in seconds
         while timeout > 0 and not self.is_dumpcap_running():
             time.sleep(0.1)

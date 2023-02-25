@@ -36,7 +36,7 @@ build:
 
 run:
 	@docker run -it --rm ${ENV_VARS} ${VOLUMES} --net host --privileged --memory 1024mb --shm-size 1024mb \
-	tbcrawl ${CRAWL_PATH}/Entrypoint.sh "./bin/tbcrawler.py $(CRAWL_PARAMS)" ${DEVICE}
+	tbcrawl python bin/tbcrawler.py $(CRAWL_PARAMS)
 
 stop:
 	@docker stop `docker ps -a -q -f ancestor=tbcrawl`
