@@ -12,6 +12,9 @@ path_to_project_root = os.path.abspath(os.path.join(dir_of_executable, '..'))
 
 sys.path.insert(0, path_to_project_root)
 
+os.system('rm -rf tor-browser')
+os.system('cp -r /home/docker/tbb_setup/tor-browser .')
+
 from tbcrawler.pytbcrawler import run
 run()
 
