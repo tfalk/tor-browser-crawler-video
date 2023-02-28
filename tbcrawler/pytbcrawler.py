@@ -11,6 +11,7 @@ from sys import maxsize, argv
 from urllib.parse import urlparse
 import re
 
+from selenium.webdriver import Firefox, FirefoxOptions
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from tbselenium.tbdriver import TorBrowserDriver
 from tbselenium.common import USE_RUNNING_TOR
@@ -37,19 +38,25 @@ def run():
     # Configure logger
     add_log_file_handler(wl_log, cm.DEFAULT_CRAWL_LOG)
 
-    # Configure controller
-    torrc_config = ut.get_dict_subconfig(config, args.config, "torrc")
-    controller = TorController(cm.TBB_DIR,
-                               torrc_dict=torrc_config,
-                               pollute=False)
+    if args.without_tor:
+        controller = None
+        opts = FirefoxOptions()
+        opts.add_argument("--headless")
+        driver = FirefoxWrapper(options=opts)
+    else:
+        # Configure controller
+        torrc_config = ut.get_dict_subconfig(config, args.config, "torrc")
+        controller = TorController(cm.TBB_DIR,
+                                   torrc_dict=torrc_config,
+                                   pollute=False)
 
-    # Configure browser
-    ffprefs = ut.get_dict_subconfig(config, args.config, "ffpref")
-    driver = TorBrowserWrapper(cm.TBB_DIR,
-                               tbb_logfile_path=cm.DEFAULT_FF_LOG,
-                               tor_cfg=USE_RUNNING_TOR,
-                               pref_dict=ffprefs,
-                               socks_port=int(torrc_config['socksport']))
+        # Configure browser
+        ffprefs = ut.get_dict_subconfig(config, args.config, "ffpref")
+        driver = TorBrowserWrapper(cm.TBB_DIR,
+                                   tbb_logfile_path=cm.DEFAULT_FF_LOG,
+                                   tor_cfg=USE_RUNNING_TOR,
+                                   pref_dict=ffprefs,
+                                   socks_port=int(torrc_config['socksport']))
 
     # Instantiate crawler
     crawler = crawler_mod.VideoCrawler(driver, controller, args.screenshots, args.device)
@@ -152,6 +159,9 @@ def parse_arguments():
                         help='Device interface on which to capture traffic.')
     parser.add_argument('--timeout', type=int, default=10,
                         help='Hard timeout (minutes) before video capture is interrupted.')
+    parser.add_argument('--without-tor', action='store_true',
+                        help='Use Firefox ESR without Tor, just HTTPS',
+                        default=False)
 
     # Crawler features
     parser.add_argument('-x', '--virtual-display',
@@ -213,6 +223,26 @@ class TorBrowserWrapper(object):
     @contextmanager
     def launch(self):
         self.driver = TorBrowserDriver(*self.args, **self.kwargs)
+        yield self.driver
+        self.driver.quit()
+
+class FirefoxWrapper(object):
+
+    def __init__(self, *args, **kwargs):
+        self.args = args
+        self.kwargs = kwargs
+        self.driver = None
+
+    def __getattr__(self, item):
+        if self.driver is None:
+            return
+        if item == "launch":
+            return getattr(self, item)
+        return getattr(self.driver, item)
+
+    @contextmanager
+    def launch(self):
+        self.driver = Firefox(*self.args, **self.kwargs)
         yield self.driver
         self.driver.quit()
 

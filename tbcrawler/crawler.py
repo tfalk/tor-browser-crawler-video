@@ -49,13 +49,21 @@ class VideoCrawler(object):
         If the controller is configured to not pollute the profile, each
         restart forces to switch the entry guard.
         """
-        with self.controller.launch():
+        if self.controller is None:
             for self.job.site in range(len(self.job.urls)):
                 if len(self.job.url) > cm.MAX_FNAME_LENGTH:
                     wl_log.warning("URL is too long: %s" % self.job.url)
                     continue
                 self._do_instance()
                 sleep(float(self.job.config['pause_between_videos']))
+        else:
+            with self.controller.launch():
+                for self.job.site in range(len(self.job.urls)):
+                    if len(self.job.url) > cm.MAX_FNAME_LENGTH:
+                        wl_log.warning("URL is too long: %s" % self.job.url)
+                        continue
+                    self._do_instance()
+                    sleep(float(self.job.config['pause_between_videos']))
 
     def _do_instance(self):
         for self.job.visit in range(self.job.visits):
@@ -70,7 +78,10 @@ class VideoCrawler(object):
                     wl_log.error("Setting soft timeout %s", seto_exc)
                 self._do_visit()
             sleep(float(self.job.config['pause_between_loads']))
-            self.post_visit()
+            if self.controller is None:
+                return
+            else:
+                self.post_visit()
 
     def _do_visit(self):
         with Sniffer(path=self.job.pcap_file, filter=cm.DEFAULT_FILTER,

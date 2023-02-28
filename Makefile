@@ -38,6 +38,10 @@ run:
 	@docker run -it --rm ${ENV_VARS} ${VOLUMES} --net host --privileged --memory 1024mb --shm-size 1024mb \
 	tbcrawl python bin/tbcrawler.py $(CRAWL_PARAMS)
 
+run-without-tor:
+	@docker run -it --rm ${ENV_VARS} ${VOLUMES} --net host --privileged --memory 1024mb --shm-size 1024mb \
+	tbcrawl python bin/tbcrawler.py $(CRAWL_PARAMS) --without-tor
+
 stop:
 	@docker stop `docker ps -a -q -f ancestor=tbcrawl`
 	@docker rm `docker ps -a -q -f ancestor=tbcrawl`
