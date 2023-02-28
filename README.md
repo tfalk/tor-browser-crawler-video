@@ -29,7 +29,8 @@ sudo make build
     * if you're crawling long videos, adjust the `--timeout` value in Makefile
     * make any desired changes to config.ini
 4. Start the crawl
-    * `sudo make run` launches a container and starts crawling
+    * `sudo make run` launches a container and starts crawling with the Tor Browser
+    * `sudo make run-without-tor` starts crawing with Firefox ESR without Tor
     * the logs, packet captures, and screenshots appear in the `results` directory
 
 ## Notes
@@ -39,8 +40,8 @@ sudo make build
     * To use another TBB version, change the version number in Dockerfile and do another `sudo make build`
     * Leaving the version number blank to get the latest version of TBB no longer works
 
-* About 30% of the time, YouTube will serve up a page saying `detected unusual traffic` and you can't get around it until you build another Tor 
-circuit with a new exit relay (this was more like 50% when using the older TBB v8.0.2). The other 70% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads, preventing more than about 6 MB of the video from loading and playing, so much of the logic in crawler.py that I'm changing deals with this. Very rarely, the video does just load and start on autoplay without intervention.
+* About 30% of the time, YouTube will serve up a page saying `detected unusual traffic` and you can't get around it until Tor attaches streams to another 
+circuit with a different exit relay (this was more like 50% when using the older TBB v8.0.2). The other 70% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads, preventing more than about 6 MB of the video from loading and playing, so much of the logic in crawler.py that I'm changing deals with this. Very rarely, the video does just load and start on autoplay without intervention.
 
 * For Vimeo, about 20% of the time, the crawler hits a hard 60-second timeout while waiting for the video player to load. It seems random. The other 80% of the time, the player loads OK and we start playing the video before a pop-up prompting us to authenticate with Google steals the focus.
 
