@@ -3,13 +3,13 @@
 # duration of the video in seconds
 
 https://www.youtube.com/watch?v=IC4wxEF-tSg,300
-#https://www.dailymotion.com/video/x4jz91j,30
-#https://vimeo.com/165393371,349
+https://www.dailymotion.com/video/x4jz91j,30
+https://vimeo.com/4505944,46
 https://www.youtube.com/watch?v=H08MMzbBj60,255
-#https://www.dailymotion.com/video/x8h0i3d,159
-#https://vimeo.com/166099057,96
+https://www.dailymotion.com/video/x8h0i3d,159
+https://vimeo.com/166099057,96
 https://www.youtube.com/watch?v=fX_dL5sPCmU,263
-#https://www.dailymotion.com/video/x8h4ope,229
-#https://vimeo.com/248059961,207
+https://www.dailymotion.com/video/x8h4ope,229
+https://vimeo.com/248059961,207
 https://www.youtube.com/watch?v=E9mwZhv5FH4,225
 https://www.youtube.com/watch?v=FqOJSwBjH6k,111

@@ -45,9 +45,9 @@ class Sniffer(object):
         prefix = ""
         command = '{}tcpdump -G {} -i {} -s 71 -w {} \'{}\'' \
                 .format(prefix, cm.HARD_VISIT_TIMEOUT, self.device, self.pcap_file, self.pcap_filter)
-        #command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
-        #    .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
-        #            self.pcap_filter, self.pcap_file)
+        # command = '{}dumpcap -P -a duration:{} -a filesize:{} -i {} -s 0 -f \'{}\' -w {}'\
+        #     .format(prefix, cm.HARD_VISIT_TIMEOUT, cm.MAX_DUMP_SIZE, self.device,
+        #             self.pcap_filter, self.pcap_file)
         wl_log.info(command)
         if dumpcap_log:
             log_fi = open(dumpcap_log, "w+")
@@ -62,9 +62,6 @@ class Sniffer(object):
             timeout -= 0.1
         if timeout < 0:
             raise DumpcapTimeoutError()
-        else:
-            wl_log.debug("tcpdump started in %s seconds" %
-                         (DUMPCAP_START_TIMEOUT - timeout))
 
         self.is_recording = True
 

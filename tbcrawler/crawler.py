@@ -33,16 +33,6 @@ class VideoCrawler(object):
             self._do_batch()
             sleep(float(self.job.config['pause_between_batches']))
 
-    def post_visit(self):
-        guard_ips = set([ip for ip in self.controller.get_all_guard_ips()])
-        wl_log.debug("Found %s guards in the consensus.", len(guard_ips))
-        wl_log.info("Filtering packets without a guard IP.")
-        try:
-            ut.filter_pcap(self.job.pcap_file, guard_ips)
-        except Exception as e:
-            wl_log.error("ERROR: filtering pcap file: %s.", e)
-            wl_log.error("Check pcap: %s", self.job.pcap_file)
-
     def _do_batch(self):
         """
         Must init/restart the Tor process to have a different circuit.
@@ -81,10 +71,6 @@ class VideoCrawler(object):
                     ut.delete_dir(self.job.path)
                     return
             sleep(float(self.job.config['pause_between_loads']))
-            if self.controller is None:
-                return
-            else:
-                self.post_visit()
 
     def _do_visit(self):
         with Sniffer(path=self.job.pcap_file, filter=cm.DEFAULT_FILTER,
@@ -142,7 +128,6 @@ class VideoCrawler(object):
                 if player_status == -1 and self.controller is not None:
                     # deal with the cookie pop-up only if using the Tor Browser
                     try:
-                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
                         wl_log.info('Trying to reject cookies.')
                         ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
                         sleep(5)
@@ -154,7 +139,6 @@ class VideoCrawler(object):
                 # sometimes it doesn't autoplay and need a nudge
                 if player_status == -1:
                     try:
-                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
                         wl_log.info('Trying to press play.')
                         ActionChains(self.driver).send_keys('k').perform()
                         sleep(5)
