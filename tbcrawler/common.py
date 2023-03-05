@@ -48,8 +48,7 @@ TBB_DIR = join(BASE_DIR, 'tor-browser')
 VIDEO_LIST = join(BASE_DIR, "videos.txt")
 
 # PCAP capture filter
-LOCALHOST_IP = "127.0.0.1"  # default localhost IP
-DEFAULT_FILTER = 'tcp and not host %s and not tcp port 22 and not tcp port 20' % LOCALHOST_IP
+DEFAULT_FILTER = 'not tcp port 22'
 
 
 class TimeoutException(Exception):

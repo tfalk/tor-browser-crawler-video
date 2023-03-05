@@ -28,7 +28,7 @@ VOLUMES = \
 DEVICE=enp1s0
 
 # commandline arguments
-CRAWL_PARAMS=-c wang_and_goldberg -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v
+CRAWL_PARAMS=-c walsh -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v
 
 # Make routines
 build:

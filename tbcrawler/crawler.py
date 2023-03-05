@@ -76,7 +76,10 @@ class VideoCrawler(object):
                     self.driver.set_page_load_timeout(cm.SOFT_VISIT_TIMEOUT)
                 except WebDriverException as seto_exc:
                     wl_log.error("Setting soft timeout %s", seto_exc)
-                self._do_visit()
+                visit_successful = self._do_visit()
+                if not visit_successful:
+                    ut.delete_dir(self.job.path)
+                    return
             sleep(float(self.job.config['pause_between_loads']))
             if self.controller is None:
                 return
@@ -86,90 +89,85 @@ class VideoCrawler(object):
     def _do_visit(self):
         with Sniffer(path=self.job.pcap_file, filter=cm.DEFAULT_FILTER,
                      device=self.device, dumpcap_log=self.job.pcap_log):
-            sleep(1)  # make sure tcpdump is running
             try:
                 with ut.timeout(cm.HARD_VISIT_TIMEOUT):
                     # begin loading page
                     self.driver.get(self.job.url)
                     if 'youtube' in self.job.url:
-                        self._visit_youtube()
-                    else: # it's Vimeo or Dailymotion
-                        self._visit_vimeo_or_dailymotion()
+                        return self._visit_youtube()
+                    else: # it's Vimeo, Dailymotion, or Rumble
+                        return self._visit_other()
             except (cm.HardTimeoutException, TimeoutException):
                 wl_log.error("Visit to %s reached hard timeout!", self.job.url)
+                return False
             except Exception as exc:
                 wl_log.error("Unknown exception: %s", exc)
+                return False
 
     def _visit_youtube(self):
         status_to_string = ['ended', 'playing', 'paused', 'buffering', 'none', 'queued', 'unstarted']
         js = "return document.getElementById('movie_player').getPlayerState()"
         player_status = 4
         time_0 = time()
-        time_now = time_0
-        time_last_checks = time_0 - 30
         screenshot_count = 0
 
         # try a few times to get an initial player status
         while player_status == 4:
-            time_now = time()
             try:
                 wl_log.info('Trying to get initial player status.')
                 player_status = self.driver.execute_script(js)
-            except WebDriverException as e:
+            except WebDriverException:
                 wl_log.error('Failed to get player status')
-                if time_now - time_0 > 20:
-                    wl_log.info('Terminating visit after the third try.')
+                if time() - time_0 > 10:
+                    wl_log.info('Terminating visit after the second try.')
                     wl_log.info('Probably on the \'detected unusual traffic\' page.')
                     if self.screenshots:
-                        wl_log.info('Trying to take a screenshot.')
                         try:
                             self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                        except WebDriverException as e:
+                        except WebDriverException:
                             wl_log.error('Cannot get screenshot.')
-                    return
+                    return False
                 sleep(10)
 
         # continue the visit capture until the video has fully loaded
         loaded_fraction = 0
-        while loaded_fraction < 1:
-            time_now = time()
-            # check progress on the screenshot interval
-            if time_now - time_last_checks > cm.SCREENSHOT_INTERVAL:
+        while True:
                 try:
                     player_status = self.driver.execute_script(js)
                     wl_log.debug('Player status: {} at {:.2f} seconds'
-                                 .format(status_to_string[player_status], time_now - time_0))
-                except Exception as e:
+                                 .format(status_to_string[player_status], time() - time_0))
+                except WebDriverException:
                     wl_log.error('Failed to get player status at 30-second interval.')
-                # try a few things if the video isn't playing
-                if player_status == -1 or player_status == 2:
+                # try a few things if the video isn't playing, but only once
+                if player_status == -1 and self.controller is not None:
+                    # deal with the cookie pop-up only if using the Tor Browser
                     try:
-                        # accept all cookies
-                        wl_log.info('Trying to accept cookies.')
+                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                        wl_log.info('Trying to reject cookies.')
                         ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
                         sleep(5)
                         player_status = self.driver.execute_script(js)
+                        wl_log.debug('Updated player status: {}'
+                                     .format(status_to_string[player_status]))
                     except WebDriverException as e:
                         wl_log.error(str(e))
-                if player_status == -1 or player_status == 2:
+                # sometimes it doesn't autoplay and need a nudge
+                if player_status == -1:
                     try:
-                        # press play
+                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
                         wl_log.info('Trying to press play.')
                         ActionChains(self.driver).send_keys('k').perform()
                         sleep(5)
                         player_status = self.driver.execute_script(js)
+                        wl_log.debug('Updated player status: {}'
+                                     .format(status_to_string[player_status]))
                     except WebDriverException as e:
                         wl_log.error(str(e))
-                if player_status == -1 or player_status == 2:
-                    try:
-                        # skip ad
-                        wl_log.info('Trying to skip ads.')
-                        skip_button_xpath = "//button[@class=\"ytp-ad-skip-button ytp-button\"]"
-                        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, skip_button_xpath))).click()
-                        sleep(5)
-                        player_status = self.driver.execute_script(js)
-                    except WebDriverException as e:
-                        wl_log.error(str(e))
+                # if it's still unstarted, it means we've been loading an ad this whole time
+                # so the whole .pcap is trash for training a model
+                if player_status == -1:
+                    wl_log.info('Must be an ad; aborting the visit.')
+                    return False
                 # take periodic screenshot
                 if self.screenshots:
                     try:
@@ -177,15 +175,19 @@ class VideoCrawler(object):
                         screenshot_count += 1
                     except WebDriverException:
                         wl_log.error('Cannot get screenshot.')
-                # get the fraction of the video loaded now, hopefully with initial ads skipped
+                # get the fraction of the video loaded if it's playing
                 try:
                     loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
-                    wl_log.debug('youtube video loaded fraction: ' + str(loaded_fraction))
-                except WebDriverException:
+                    wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
+                except WebDriverException as e:
                     wl_log.error(str(e))
-                time_last_checks = time_now
+                if loaded_fraction == 1:
+                    wl_log.info('Visit completed successfully.')
+                    return True
+                else:
+                    sleep(30)
 
-    def _visit_vimeo_or_dailymotion(self):
+    def _visit_other(self):
         if 'vimeo' in self.job.url:
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
             wl_log.info("Waiting up to 60 seconds for the Play button to appear.")
@@ -217,7 +219,7 @@ class VideoCrawler(object):
             # from the end of playback
             if time() - time_0 > self.job.playback_time - 20:
                 wl_log.info("Ending after the expected playback time of about " + str(self.job.playback_time) + " seconds.")
-                return
+                return True
 
 class CrawlJob(object):
     def __init__(self, config, urls):

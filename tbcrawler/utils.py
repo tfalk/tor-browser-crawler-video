@@ -3,7 +3,7 @@ from contextlib import contextmanager
 from distutils.dir_util import copy_tree
 from os import makedirs
 from os.path import exists
-from shutil import copyfile
+from shutil import copyfile, rmtree
 
 from scapy.all import PcapReader, wrpcap
 from scapy.layers.inet import IP
@@ -18,6 +18,10 @@ def create_dir(dir_path):
         makedirs(dir_path)
     return dir_path
 
+def delete_dir(dir_path):
+    """Delete a directory if it exists."""
+    if exists(dir_path):
+        rmtree(dir_path)
 
 def clone_dir_temporary(dir_path):
     """Makes a temporary copy of a directory."""
