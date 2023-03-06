@@ -11,6 +11,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install libtool li
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install python-setuptools
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install net-tools ethtool tshark libpcap-dev iw tcpdump
 RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install xvfb firefox-esr
+RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install webext-ublock-origin-firefox
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
