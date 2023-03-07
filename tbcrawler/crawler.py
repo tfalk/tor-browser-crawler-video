@@ -107,69 +107,67 @@ class VideoCrawler(object):
                 if time() - time_0 > 10:
                     wl_log.info('Terminating visit after the second try.')
                     wl_log.info('Probably on the \'detected unusual traffic\' page.')
-                    if self.screenshots:
-                        try:
-                            self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                        except WebDriverException:
-                            wl_log.error('Cannot get screenshot.')
                     return False
                 sleep(10)
+
+        # deal with the cookies banner only if using the Tor Browser
+        if player_status == -1 and self.controller is not None:
+            try:
+                wl_log.info('Trying to reject cookies.')
+                ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
+                sleep(5)
+                player_status = self.driver.execute_script(js)
+                wl_log.debug('Updated player status: {}'
+                             .format(status_to_string[player_status]))
+            except WebDriverException as e:
+                wl_log.error(str(e))
+
+        # if it doesn't autoplay, give it a nudge
+        if player_status == -1:
+            try:
+                wl_log.info('Trying to press play.')
+                ActionChains(self.driver).send_keys('k').perform()
+                sleep(5)
+                player_status = self.driver.execute_script(js)
+                wl_log.debug('Updated player status: {}'
+                             .format(status_to_string[player_status]))
+            except WebDriverException as e:
+                wl_log.error(str(e))
+
+        # if it's still unstarted, it means we've been loading an ad this whole time
+        # so the whole .pcap is trash for training a model
+        if player_status == -1:
+            wl_log.info('Must be an ad; aborting the visit.')
+            return False
 
         # continue the visit capture until the video has fully loaded
         loaded_fraction = 0
         while True:
+            try:
+                player_status = self.driver.execute_script(js)
+                wl_log.debug('Player status: {} at {:.2f} seconds'
+                             .format(status_to_string[player_status], time() - time_0))
+            except WebDriverException:
+                wl_log.error('Failed to get player status at 30-second interval.')
+            # take periodic screenshot
+            if self.screenshots:
+                wl_log.info("Trying to take a screenshot.")
                 try:
-                    player_status = self.driver.execute_script(js)
-                    wl_log.debug('Player status: {} at {:.2f} seconds'
-                                 .format(status_to_string[player_status], time() - time_0))
+                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                    screenshot_count += 1
                 except WebDriverException:
-                    wl_log.error('Failed to get player status at 30-second interval.')
-                # try a few things if the video isn't playing, but only once
-                if player_status == -1 and self.controller is not None:
-                    # deal with the cookie pop-up only if using the Tor Browser
-                    try:
-                        wl_log.info('Trying to reject cookies.')
-                        ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
-                        sleep(5)
-                        player_status = self.driver.execute_script(js)
-                        wl_log.debug('Updated player status: {}'
-                                     .format(status_to_string[player_status]))
-                    except WebDriverException as e:
-                        wl_log.error(str(e))
-                # sometimes it doesn't autoplay and need a nudge
-                if player_status == -1:
-                    try:
-                        wl_log.info('Trying to press play.')
-                        ActionChains(self.driver).send_keys('k').perform()
-                        sleep(5)
-                        player_status = self.driver.execute_script(js)
-                        wl_log.debug('Updated player status: {}'
-                                     .format(status_to_string[player_status]))
-                    except WebDriverException as e:
-                        wl_log.error(str(e))
-                # if it's still unstarted, it means we've been loading an ad this whole time
-                # so the whole .pcap is trash for training a model
-                if player_status == -1:
-                    wl_log.info('Must be an ad; aborting the visit.')
-                    return False
-                # take periodic screenshot
-                if self.screenshots:
-                    try:
-                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                        screenshot_count += 1
-                    except WebDriverException:
-                        wl_log.error('Cannot get screenshot.')
-                # get the fraction of the video loaded if it's playing
-                try:
-                    loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
-                    wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
-                except WebDriverException as e:
-                    wl_log.error(str(e))
-                if loaded_fraction == 1:
-                    wl_log.info('Visit completed successfully.')
-                    return True
-                else:
-                    sleep(30)
+                    wl_log.error('Cannot get screenshot.')
+            # get the fraction of the video loaded if it's playing
+            try:
+                loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
+                wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
+            except WebDriverException:
+                wl_log.error('Failed to get fraction of video loaded.')
+            if loaded_fraction == 1:
+                wl_log.info('Visit completed successfully.')
+                return True
+            else:
+                sleep(30)
 
     def _visit_other(self):
         if 'vimeo' in self.job.url:
@@ -185,6 +183,12 @@ class VideoCrawler(object):
             wl_log.info("Waiting up to 60 seconds for the cookie policy to appear.")
             understand_button_xpath = "/html/body/div[1]/div/div[2]/button"
             WebDriverWait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, understand_button_xpath)))
+        elif 'rumble' in self.job.url:
+            wl_log.info("Waiting up to 60 seconds for the Up Vote button to appear.")
+            upvote_button_xpath = "//button[@aria-label='Rumbles up vote']"
+            WebDriverWait(self.driver, 60).until(EC.element_to_be_clickable((By.XPATH, upvote_button_xpath)))
+            video = self.driver.find_element(By.ID, "videoPlayer")
+            ActionChains(self.driver).click(video).perform()
         # take a screenshot and then repeat every 20 seconds
         # until the expected time required has elapsed
         time_0 = time()
@@ -197,7 +201,7 @@ class VideoCrawler(object):
                     screenshot_count += 1
                 except WebDriverException:
                     wl_log.error("Cannot get screenshot.")
-            sleep(20)
+            sleep(30)
             # Vimeo buffers about 20 seconds of the stream,
             # so we can stop once we're less than 20 seconds
             # from the end of playback

@@ -2,12 +2,13 @@
 # followed by a comma and the
 # duration of the video in seconds
 
-https://www.youtube.com/watch?v=IC4wxEF-tSg,300
-https://www.dailymotion.com/video/x4jz91j,30
-https://vimeo.com/120421316,162
-https://www.youtube.com/watch?v=H08MMzbBj60,255
-https://www.dailymotion.com/video/x8h0i3d,159
-https://vimeo.com/166099057,96
-https://www.youtube.com/watch?v=fX_dL5sPCmU,263
-https://www.dailymotion.com/video/x8h4ope,229
-https://vimeo.com/248059961,207
+#https://www.youtube.com/watch?v=IC4wxEF-tSg,300
+#https://www.youtube.com/watch?v=H08MMzbBj60,255
+#https://www.youtube.com/watch?v=fX_dL5sPCmU,263
+#https://www.dailymotion.com/video/x4jz91j,30
+#https://www.dailymotion.com/video/x8h0i3d,159
+#https://www.dailymotion.com/video/x8h4ope,229
+#https://vimeo.com/120421316,162
+#https://vimeo.com/166099057,96
+#https://vimeo.com/248059961,207
+https://rumble.com/v1sdzs0-highlights-puerto-rico-vs-south-africa-wbsc-u-15-baseball-world-cup-opening.html,167
