@@ -1,17 +1,11 @@
 # This dockerfile allows to run an crawl inside a docker container
 
 # Pull base image.
-#FROM debian:stable-slim
-FROM python:3.11
+FROM debian:sid
 
 # Install required packages.
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install sudo build-essential autoconf git zip unzip xz-utils
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install libtool libevent-dev libssl-dev
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install python-setuptools
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install net-tools ethtool tshark libpcap-dev iw tcpdump
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install xvfb firefox-esr
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install webext-ublock-origin-firefox
+RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install git python3-pip python3-setuptools tcpdump xvfb firefox-esr webext-ublock-origin-firefox
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -20,9 +14,8 @@ RUN apt-get clean \
 RUN mv /usr/bin/tcpdump /usr/sbin/tcpdump
 
 # Install python requirements.
-RUN pip install --upgrade pip
 COPY requirements.txt /tmp/requirements.txt
-RUN pip install -r /tmp/requirements.txt
+RUN pip3 install -r /tmp/requirements.txt --break-system-packages
 
 # add host user to container
 RUN adduser --system --group --disabled-password --gecos '' --shell /bin/bash docker
