@@ -35,9 +35,9 @@ make build
 
 ## Notes
 * Software and Library Versions
-    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3
+    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3 with latest geckodriver
     * I've changed the Docker base image from python:2.7 to debian:sid for the latest Python 3.11 and selenium, tbselenium, etc. packages
-    * Debian Sid also provides the latest geckodriver, Firefox ESR, and uBlock Origin
+    * Debian Sid also provides the latest Firefox ESR, and uBlock Origin
     * To use another TBB version, change the version number in Dockerfile and do another `make build`
     * Leaving the version number blank to get the latest version of TBB no longer works
 
@@ -48,7 +48,7 @@ circuit with a different exit relay (this was more like 50% when using the older
 
 * For Vimeo, sometimes the crawler hits a hard 60-second timeout while waiting for the video to load because it wants us to sign in to an account, which seems to be due to videos being "not yet rated." Usually, the player loads OK and we press spacebar to start playing the video before a banner prompting us to authenticate with Google steals the focus.
 
-* Dailymotion autoplays without intervention. We just wait for a key element to load before starting the playback timer to know when to end the capture. The main problem right now is that without Tor, there are lots of ads. We can pick out the stream for the video after we have the .pcap, but we really don't know when to stop the capture due to the ads. I've incldued webext-ublock-origin in the Dockerfile to deal with this.
+* Dailymotion autoplays without intervention. We just wait for a key element to load before starting the playback timer to know when to end the capture. The main problem right now is that without Tor, there are lots of ads. We could pick out the stream for the video after we have the .pcap, but we still wouldn't know when to stop the capture due to variable length ads. I've included webext-ublock-origin in the Dockerfile to deal with this.
 
 * I've added logic that deletes the whole directory for a visit after hitting YouTube's `detected unusual traffic` page, after aborting due to ads, or after a hard timeout, so we only store what we'll actually want to parse later.
 
