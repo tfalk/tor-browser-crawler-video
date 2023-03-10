@@ -123,7 +123,7 @@ class VideoCrawler(object):
         # if it's still unstarted, we're watching an ad,
         # so let's skip it if possible like a human would do
         if player_status == -1:
-            wl_log.info('Must be an ad. Trying the Skip button.')
+            wl_log.info("Must be an ad. We'll try to skip it after 15 seconds.")
             sleep(15)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
@@ -142,10 +142,6 @@ class VideoCrawler(object):
             player_status = self.driver.execute_script(js)
             wl_log.debug('Updated player status: {}'
                          .format(status_to_string[player_status]))
-
-        while True:
-            loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
-            wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -153,14 +149,27 @@ class VideoCrawler(object):
                     screenshot_count += 1
                 except WebDriverException:
                     wl_log.error("Cannot get screenshot.")
+
+        while True:
+            loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
+            wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time or elapsed_time > 360:
+                if self.screenshots:
+                    wl_log.info("Trying to take a screenshot.")
+                    try:
+                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                        screenshot_count += 1
+                    except WebDriverException:
+                        wl_log.error("Cannot get screenshot.")
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
             sleep(30)
 
     def _visit_other(self):
+        screenshot_count = 0
+
         if 'vimeo' in self.job.url:
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
             wl_log.info("Waiting up to 30 seconds for the play button to appear.")
@@ -168,23 +177,21 @@ class VideoCrawler(object):
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath)))
             wl_log.info("Pressing spacebar to start the video.")
             ActionChains(self.driver).send_keys(Keys.SPACE).perform()
+
         elif 'dailymotion' in self.job.url:
             # Dailymotion will autoplay, but we'll wait for some elements to load before we
             # start the clock, so we don't end the capture too early
             wl_log.info("Waiting up to 30 seconds for the cookie policy to appear.")
             understand_button_xpath = "/html/body/div[1]/div/div[2]/button"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, understand_button_xpath)))
+
         elif 'rumble' in self.job.url:
             wl_log.info("Waiting up to 30 seconds for the video player to appear.")
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.ID, "videoPlayer")))
             video = self.driver.find_element(By.ID, "videoPlayer")
             wl_log.info("Pressing play.")
             ActionChains(self.driver).click(video).perform()
-        # take a screenshot and then repeat every 30 seconds
-        # until the expected time required has elapsed
-        time_0 = time()
-        screenshot_count = 0
-        while True:
+            sleep(20)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -192,9 +199,39 @@ class VideoCrawler(object):
                     screenshot_count += 1
                 except WebDriverException:
                     wl_log.error("Cannot get screenshot.")
+            # deal with Rumble ads which appear in an iframe
+            try:
+                wl_log.info("Trying to skip ad if possible.")
+                iframe = self.driver.find_elements(By.TAG_NAME,'iframe')[0]
+                self.driver.switch_to.frame(iframe)
+                skip_button_xpath = "//button[@aria-label='Skip Ad']"
+                skip_button = self.driver.find_element(By.XPATH, skip_button_xpath)
+                ActionChains(self.driver).click(skip_button).perform()
+            except WebDriverException:
+                wl_log.error("No ad playing, or can't skip it.")
+            finally:
+                self.driver.switch_to.default_content()
+
+        time_0 = time()
+        if self.screenshots:
+            wl_log.info("Trying to take a screenshot.")
+            try:
+                self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                screenshot_count += 1
+            except WebDriverException:
+                wl_log.error("Cannot get screenshot.")
+        while True:
+            wl_log.debug('Heartbeat.')
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time or elapsed_time > 360:
+                if self.screenshots:
+                    wl_log.info("Trying to take a screenshot.")
+                    try:
+                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                        screenshot_count += 1
+                    except WebDriverException:
+                        wl_log.error("Cannot get screenshot.")
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
             sleep(30)

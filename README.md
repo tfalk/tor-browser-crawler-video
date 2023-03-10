@@ -18,7 +18,7 @@ sudo systemctl enable docker.service
 systemctl disable containerd.service
 ```
 
-2. Build the Docker container
+2. Logout, login, then build and run the Docker container
 ```
 sudo apt install make
 make build
@@ -48,14 +48,14 @@ in which cases it just deletes the whole subdirectory in `results` for that visi
 
 * About 30% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 70% of the time, it will show a `Before you continue 
 to YouTube` banner about cookies, preventing more than about 6 MB of the video from loading. The crawler rejects cookies, and then the video autoplays. Without Tor, the cookie 
-banner doesn't appear but the crawler needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad 
-like a normal user would do after waiting 15 seconds.
+banner doesn't appear but the crawler needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad(s) 
+like a human would do after waiting 15 seconds.
 
 * Dailymotion and Vimeo don't show many ads when using the Tor Browser. Dailymotion will autoplay, but the crawler needs to press play on Vimeo. Rumble requires the crawler to 
-press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which I still need to address somehow.
+press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 15 seconds.
 
 * I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending 
-on the threat model used. We don't need the encrypted payloads for anything. This reduces required storage space by roughly 95%.
+on the threat model used. We don't need the encrypted payloads for anything, and they would require orders-of-magnitude more storage space.
 
 * Using the `run-without-tor` option, YouTube streams video over the QUIC protocol, so I've changed the tcpdump filter to capture UDP in addition to TCP.
 
