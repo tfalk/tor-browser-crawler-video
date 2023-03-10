@@ -1,11 +1,11 @@
-# This dockerfile allows to run an crawl inside a docker container
-
 # Pull base image.
-FROM debian:sid
+# Debian Sid gets us an up-to-date version of everything and
+# slim saves disk space by excluding a lot packages that we don't need
+FROM debian:sid-slim
 
 # Install required packages.
 RUN apt-get update
-RUN DEBIAN_FRONTEND=noninteractive apt-get --assume-yes --yes install git python3-pip python3-setuptools tcpdump xvfb firefox-esr webext-ublock-origin-firefox
+RUN apt-get --yes install git python3-pip python3-setuptools tcpdump xvfb firefox-esr webext-ublock-origin-firefox
 RUN apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 

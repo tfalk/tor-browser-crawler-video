@@ -24,7 +24,7 @@ sudo apt install make
 make build
 ```
 3. Setup your crawl configuration files
-    * replace the contents of videos.txt with your list of YouTube, Vimeo, and Dailymotion URLs to crawl, followed by a comma and the duration in seconds
+    * replace the contents of videos.txt with your list of YouTube, Dailymotion, Vimeo, and Rumble URLs to crawl, followed by a comma and the duration in seconds
     * edit Makefile to use the correct network interface (find yours with `ip link`)
     * if you're crawling long videos, adjust the `--timeout` value in Makefile
     * make any desired changes to config.ini
@@ -35,25 +35,31 @@ make build
 
 ## Notes
 * Software and Library Versions
-    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3 with latest geckodriver
-    * I've changed the Docker base image from python:2.7 to debian:sid for the latest Python 3.11 and selenium, tbselenium, etc. packages
-    * Debian Sid also provides the latest Firefox ESR, and uBlock Origin
+    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3 with geckodriver v0.32.2
+    * I've changed the Docker base image from python:2.7 to debian:sid-slim for the latest Python3 and selenium, tbselenium, etc. packages
+    * Debian Sid also provides the latest Firefox ESR and uBlock Origin for the `run-without-tor` option
     * To use another TBB version, change the version number in Dockerfile and do another `make build`
     * Leaving the version number blank to get the latest version of TBB no longer works
 
-* I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended` but now it will look for when the video is fully loaded, even though the video itself is still playing. This speeds up crawling, and we're only interested in the network traffic anyway. If it can't get an initial player status within the first 20 seconds, that will also terminate the visit instead of waiting for the hard timeout. For Vimeo and Dailymotion, the trigger for when to end a packet capture is the elapsed time after the player loads and the video starts. Vimeo appears to buffer about 20 seconds of video, so when we're less than 20 seconds from the end of the playback time (specified in videos.txt, assuming it plays smoothly) we end the capture before another video gets queued up.
+* I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended`, and then when the fraction of the video loaded 
+reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it can't get an 
+initial status from the YouTube player (usually because the Tor exit relay is blocked) or if it doesn't see certain page elements (depending on the platform) within 30 seconds, 
+in which cases it just deletes the whole subdirectory in `results` for that visit.
 
-* About 30% of the time when using the Tor Browser, YouTube will serve up a page saying `detected unusual traffic` and you can't get around it until Tor attaches streams to another 
-circuit with a different exit relay (this was more like 50% when using the older TBB v8.0.2). The other 70% of the time, you'll get a `Before you continue to YouTube` banner about cookies once the page finally loads, preventing more than about 6 MB of the video from loading. The logic in crawler.py handles the cookie banner and then presses play if necessary to get video playback started. Pressing play is always necessary without Tor, in which case we never get the cookie banner. If playback is still `unstarted` at that point, it's because an ad is playing before the video. Even if we skipped the ad, loading it has already polluted the packet capture, so we just abort the visit. We need clean training data.
+* About 30% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 70% of the time, it will show a `Before you continue 
+to YouTube` banner about cookies, preventing more than about 6 MB of the video from loading. The crawler rejects cookies, and then the video autoplays. Without Tor, the cookie 
+banner doesn't appear but the crawler needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad 
+like a normal user would do after waiting 15 seconds.
 
-* For Vimeo, sometimes the crawler hits a hard 60-second timeout while waiting for the video to load because it wants us to sign in to an account, which seems to be due to videos being "not yet rated." Usually, the player loads OK and we press spacebar to start playing the video before a banner prompting us to authenticate with Google steals the focus.
+* Dailymotion and Vimeo don't show many ads when using the Tor Browser. Dailymotion will autoplay, but the crawler needs to press play on Vimeo. Rumble requires the crawler to 
+press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which I still need to address somehow.
 
-* Dailymotion autoplays without intervention. We just wait for a key element to load before starting the playback timer to know when to end the capture. The main problem right now is that without Tor, there are lots of ads. We could pick out the stream for the video after we have the .pcap, but we still wouldn't know when to stop the capture due to variable length ads. I've included webext-ublock-origin in the Dockerfile to deal with this.
+* I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending 
+on the threat model used. We don't need the encrypted payloads for anything. This reduces required storage space by roughly 95%.
 
-* I've added logic that deletes the whole directory for a visit after hitting YouTube's `detected unusual traffic` page, after aborting due to ads, or after a hard timeout, so we only store what we'll actually want to parse later.
+* Using the `run-without-tor` option, YouTube streams video over the QUIC protocol, so I've changed the tcpdump filter to capture UDP in addition to TCP.
 
-* I've set the `--snapshot-length` to 71 bytes for tcpdump, so we only save the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending on the threat model used. We don't need the encrypted payloads for anything. This reduces required storage space by roughly 95%.
-
-* Using the run-without-tor option, I'm seeing YouTube stream video over the QUIC protocol, so I've changed the tcpdump filter to capture UDP in addition to TCP.
-
-* The default Docker settings often resulted in a Selenium WebDriverException saying `failed to decode response from marionette` and subsequently `tried to run command without establishing a connection` when trying to run execute_script() commands even though the page and video were loading. The fix was to give the container higher runtime constraints on resources, specifically memory and shared host memory (see https://stackoverflow.com/questions/49734915/failed-to-decode-response-from-marionette-message-in-python-firefox-headless-s). This is included in the `run` command in Makefile
+* The default Docker settings often resulted in a Selenium WebDriverException saying `failed to decode response from marionette` and subsequently `tried to run command without 
+establishing a connection` when trying to run execute_script() commands even though the page and video were loading. The fix was to give the container higher runtime constraints 
+on resources, specifically memory and shared host memory (see 
+https://stackoverflow.com/questions/49734915/failed-to-decode-response-from-marionette-message-in-python-firefox-headless-s). This is included in the `run` command in Makefile
