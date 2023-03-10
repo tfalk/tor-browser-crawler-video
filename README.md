@@ -59,6 +59,9 @@ on the threat model used. We don't need the encrypted payloads for anything, and
 
 * Using the `run-without-tor` option, YouTube streams video over the QUIC protocol, so I've changed the tcpdump filter to capture UDP in addition to TCP.
 
+* I've changed the virtual display size from 1280x800 to a more standard 1920x1200 for these days, based on the Dell XPS 13 laptop, because the Tor Browser was choosing a very 
+small window size and preventing some page elements from being visible.
+
 * The default Docker settings often resulted in a Selenium WebDriverException saying `failed to decode response from marionette` and subsequently `tried to run command without 
 establishing a connection` when trying to run execute_script() commands even though the page and video were loading. The fix was to give the container higher runtime constraints 
 on resources, specifically memory and shared host memory (see 

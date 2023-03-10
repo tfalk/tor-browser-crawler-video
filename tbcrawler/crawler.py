@@ -142,6 +142,7 @@ class VideoCrawler(object):
             player_status = self.driver.execute_script(js)
             wl_log.debug('Updated player status: {}'
                          .format(status_to_string[player_status]))
+            sleep(5)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -165,25 +166,23 @@ class VideoCrawler(object):
                         wl_log.error("Cannot get screenshot.")
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
-            sleep(30)
+            sleep(10)
 
     def _visit_other(self):
         screenshot_count = 0
 
         if 'vimeo' in self.job.url:
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
-            wl_log.info("Waiting up to 30 seconds for the play button to appear.")
+            wl_log.info("Waiting up to 30 seconds to click the play button.")
             play_button_xpath = "//button[@aria-label='Play']"
-            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath)))
-            wl_log.info("Pressing spacebar to start the video.")
-            ActionChains(self.driver).send_keys(Keys.SPACE).perform()
+            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
 
         elif 'dailymotion' in self.job.url:
             # Dailymotion will autoplay, but we'll wait for some elements to load before we
             # start the clock, so we don't end the capture too early
-            wl_log.info("Waiting up to 30 seconds for the cookie policy to appear.")
-            understand_button_xpath = "/html/body/div[1]/div/div[2]/button"
-            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, understand_button_xpath)))
+            wl_log.info("Waiting up to 30 seconds for the Like button to appear.")
+            like_button_xpath = "/html/body/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div/div/div/div[1]/div[5]/div/div/button[1]"
+            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, like_button_xpath)))
 
         elif 'rumble' in self.job.url:
             wl_log.info("Waiting up to 30 seconds for the video player to appear.")
@@ -213,6 +212,7 @@ class VideoCrawler(object):
                 self.driver.switch_to.default_content()
 
         time_0 = time()
+        sleep(3)
         if self.screenshots:
             wl_log.info("Trying to take a screenshot.")
             try:
@@ -234,7 +234,7 @@ class VideoCrawler(object):
                         wl_log.error("Cannot get screenshot.")
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
-            sleep(30)
+            sleep(10)
 
 class CrawlJob(object):
     def __init__(self, config, urls):

@@ -23,11 +23,11 @@ SCREENSHOT_INTERVAL = 30.      # in seconds
 
 DEFAULT_SOCKS_PORT = 9051
 
-# virtual display dimensions
+# virtual display dimensions... based on Dell XPS 13
 # W = width of the virtual display
 # H = height of the virtual display
-DEFAULT_XVFB_WIN_W = 1280
-DEFAULT_XVFB_WIN_H = 800
+DEFAULT_XVFB_WIN_W = 1920
+DEFAULT_XVFB_WIN_H = 1200
 
 # Default paths
 BASE_DIR = abspath(join(dirname(__file__), pardir))
