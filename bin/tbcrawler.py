@@ -1,4 +1,3 @@
-#!/usr/bin/env python2
 # From: https://gitweb.torproject.org/pluggable-transports/obfsproxy.git/tree/bin/obfsproxy
 import sys, os
 

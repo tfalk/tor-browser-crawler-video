@@ -123,8 +123,8 @@ class VideoCrawler(object):
         # if it's still unstarted, we're watching an ad,
         # so let's skip it if possible like a human would do
         if player_status == -1:
-            wl_log.info("Must be an ad. We'll try to skip it after 15 seconds.")
-            sleep(15)
+            wl_log.info("Must be an ad. We'll try to skip it.")
+            sleep(20)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -134,29 +134,27 @@ class VideoCrawler(object):
                     wl_log.error("Cannot get screenshot.")
             try:
                 skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
-                skip_button = self.driver.find_element(By.XPATH, skip_button_xpath)
-                ActionChains(self.driver).click(skip_button).perform()
+                self.driver.find_element(By.XPATH, skip_button_xpath).click()
             except WebDriverException:
                 wl_log.error("Can't skip the ad.")
-            sleep(1)
+            sleep(5)
             player_status = self.driver.execute_script(js)
             wl_log.debug('Updated player status: {}'
                          .format(status_to_string[player_status]))
-            sleep(5)
-            if self.screenshots:
-                wl_log.info("Trying to take a screenshot.")
-                try:
-                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                    screenshot_count += 1
-                except WebDriverException:
-                    wl_log.error("Cannot get screenshot.")
+        if self.screenshots:
+            wl_log.info("Trying to take a screenshot.")
+            try:
+                self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                screenshot_count += 1
+            except WebDriverException:
+                wl_log.error("Cannot get screenshot.")
 
         while True:
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
             wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time or elapsed_time > 360:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
                     try:
@@ -224,7 +222,7 @@ class VideoCrawler(object):
             wl_log.debug('Heartbeat.')
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time or elapsed_time > 360:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
                     try:
