@@ -15,7 +15,7 @@ sudo apt-get update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 sudo usermod -aG docker $USER
 sudo systemctl enable docker.service
-systemctl disable containerd.service
+sudo systemctl disable containerd.service
 ```
 
 2. Logout, login, then build and run the Docker container
