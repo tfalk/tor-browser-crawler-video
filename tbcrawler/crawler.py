@@ -95,7 +95,19 @@ class VideoCrawler(object):
         js = "return document.getElementById('movie_player').getPlayerState()"
         player_status = 4
         screenshot_count = 0
+        sleep(5)
+
+        # deal with the cookies banner only if using the Tor Browser
+        if self.controller is not None:
+            wl_log.info('Trying to reject cookies.')
+            ActionChains(self.driver).send_keys(Keys.TAB * 4 + Keys.ENTER).perform()
+            sleep(5)
+
+        # press play for both Tor Browser and Firefox
+        wl_log.info('Trying to press play.')
+        ActionChains(self.driver).send_keys('k').perform()
         time_0 = time()
+        sleep(20)
 
         # try to get an initial player status to see if this Tor
         # exit relay is blocked
@@ -107,24 +119,11 @@ class VideoCrawler(object):
             wl_log.info("Probably on the 'detected unusual traffic' page.")
             return False
 
-        # deal with the cookies banner only if using the Tor Browser
-        if self.controller is not None:
-            wl_log.info('Trying to reject cookies.')
-            ActionChains(self.driver).send_keys(Keys.TAB * 5 + Keys.ENTER).perform()
-        # press play only if not using Tor
-        else:
-            wl_log.info('Trying to press play.')
-            ActionChains(self.driver).send_keys('k').perform()
-
-        sleep(5)
-        player_status = self.driver.execute_script(js)
-        wl_log.debug('Player status: {}'
-                     .format(status_to_string[player_status]))
         # if it's still unstarted, we're watching an ad,
         # so let's skip it if possible like a human would do
         if player_status == -1:
             wl_log.info("Must be an ad. We'll try to skip it.")
-            sleep(20)
+            # screenshot of the ad and skip button (or lack of one)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -141,6 +140,8 @@ class VideoCrawler(object):
             player_status = self.driver.execute_script(js)
             wl_log.debug('Updated player status: {}'
                          .format(status_to_string[player_status]))
+
+        # starting screenshot
         if self.screenshots:
             wl_log.info("Trying to take a screenshot.")
             try:
@@ -155,6 +156,7 @@ class VideoCrawler(object):
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
+                # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
                     try:
@@ -189,6 +191,7 @@ class VideoCrawler(object):
             wl_log.info("Pressing play.")
             ActionChains(self.driver).click(video).perform()
             sleep(20)
+            # screenshot of the ad and skip button (or lack of one)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
                 try:
@@ -211,6 +214,7 @@ class VideoCrawler(object):
 
         time_0 = time()
         sleep(3)
+        # starting screenshot
         if self.screenshots:
             wl_log.info("Trying to take a screenshot.")
             try:
@@ -223,6 +227,7 @@ class VideoCrawler(object):
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
+                # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
                     try:

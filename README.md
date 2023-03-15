@@ -1,8 +1,9 @@
 tor-browser-crawler-video
 ===============
 
-This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler).
-The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it from Danny to update it for the YouTube, Dailymotion, Vimeo, and Rumble interfaces in late 2022, early 2023, and add functionality to crawl the same platforms without using Tor. I'm running an Ubuntu Server 22.04 VM with 2 CPUs and 1 GB of RAM.
+This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler). The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it 
+from Danny to update it for the YouTube, Dailymotion, Vimeo, and Rumble interfaces in late 2022, early 2023, and add functionality to crawl the same platforms without using Tor. 
+I'm running an Ubuntu Server 22.04 VM with 2 CPUs and 1 or 2 GB of RAM.
 
 #### Steps
 1. Install Docker
@@ -42,17 +43,17 @@ make build
     * Leaving the version number blank to get the latest version of TBB no longer works
 
 * I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended`, and then when the fraction of the video loaded 
-reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it can't get an 
-initial status from the YouTube player (usually because the Tor exit relay is blocked) or if it doesn't see certain page elements (depending on the platform) within 30 seconds, 
-in which cases it just deletes the whole subdirectory in `results` for that visit.
+reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it gets the 
+`detected unusual traffic` page from YouTube or if it doesn't see certain page elements (depending on the platform) within 30 seconds, in which cases it just deletes the whole 
+subdirectory in `results` for that visit.
 
-* About 30% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 70% of the time, it will show a `Before you continue 
-to YouTube` banner about cookies, preventing more than about 6 MB of the video from loading. The crawler rejects cookies, and then the video autoplays. Without Tor, the cookie 
-banner doesn't appear but the crawler needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad(s) 
-like a human would do after waiting 15 seconds.
+* About 50% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 50% of the time, it will show a `Before you continue 
+to YouTube` banner about cookies, preventing more than about 6 MB of the video from loading. The crawler tries to reject cookies and press play. Without Tor, the cookie banner 
+doesn't appear but the crawler still needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad(s) 
+like a human would do after waiting 20 seconds.
 
 * Dailymotion and Vimeo don't show many ads when using the Tor Browser. Dailymotion will autoplay, but the crawler needs to press play on Vimeo. Rumble requires the crawler to 
-press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 15 seconds.
+press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 20 seconds.
 
 * I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending 
 on the threat model used. We don't need the encrypted payloads for anything, and they would require orders-of-magnitude more storage space.
