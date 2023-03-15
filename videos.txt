@@ -275,16 +275,16 @@ https://www.youtube.com/watch?v=Vl0XOMWbvug,1382
 https://www.youtube.com/watch?v=Jopg9mlknOQ,1030
 
 # dailymotion 210-219
-https://www.dailymotion.com/video/x8j2kqh,913
-https://www.dailymotion.com/video/x8j2kpi,1213
-https://www.dailymotion.com/video/x8j2krc,863
-https://www.dailymotion.com/video/x8j2kpn,1015
-https://www.dailymotion.com/video/x8j2kpx,932
-https://www.dailymotion.com/video/x8j2krn,809
-https://www.dailymotion.com/video/x8j2kp5,1419
-https://www.dailymotion.com/video/x8j2krt,496
-https://www.dailymotion.com/video/x8j2kfs,1382
-https://www.dailymotion.com/video/x8j2kq8,1030
+https://www.dailymotion.com/video/k4zlB4gNCvDRjNyU5kJ,913
+https://www.dailymotion.com/video/k5cTQijw1xzANoyU5ka,1213
+https://www.dailymotion.com/video/k6m02wUxGZFb59yU5le,863
+https://www.dailymotion.com/video/k637oy7a5rvjrsyU5kf,1015
+https://www.dailymotion.com/video/k6hVQqn1RDPGgMyU5kp,932
+https://www.dailymotion.com/video/k4Qc7uzqd9uLV7yU5lp,809
+https://www.dailymotion.com/video/k1HdCqar9FfqG4yU5jX,1419
+https://www.dailymotion.com/video/k6h7Nl2cwbazahyU5lv,496
+https://www.dailymotion.com/video/k6FtfeyPeyNdpzyU5ew,1382
+https://www.dailymotion.com/video/kssCsSlHmu7FOvyU5kA,1030
 
 # vimeo 220-229
 https://vimeo.com/807660120,913
