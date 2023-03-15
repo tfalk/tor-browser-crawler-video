@@ -173,13 +173,13 @@ https://www.youtube.com/watch?v=zHUMm2qWfj8,217
 # dailymotion 130-139
 https://www.dailymotion.com/video/x1cnpwo,191
 https://www.dailymotion.com/video/x7w4cvr,304
-https://www.dailymotion.com/video/x7vxqi3,201
-https://www.dailymotion.com/video/x8gvgv5,406
+https://www.dailymotion.com/video/x8iybc8,510
+https://www.dailymotion.com/video/x8irdke,794
 https://www.dailymotion.com/video/x8ilnpz,225
 https://www.dailymotion.com/video/x8i9emx,264
-https://www.dailymotion.com/video/x8ikhao,192
-https://www.dailymotion.com/video/x8ijgs1,192
-https://www.dailymotion.com/video/x8ipd9x,239
+https://www.dailymotion.com/video/x8izg8z,258
+https://www.dailymotion.com/video/x8hjyij,205
+https://www.dailymotion.com/video/x8ixvq8,291
 https://www.dailymotion.com/video/x8itlo5,286
 
 # vimeo 140-149
