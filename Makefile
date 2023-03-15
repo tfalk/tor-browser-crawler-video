@@ -25,7 +25,7 @@ VOLUMES = \
 
 
 # network interface on which to listen
-DEVICE=enp1s0
+DEVICE=ens5
 
 # commandline arguments
 CRAWL_PARAMS=-c walsh -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v
