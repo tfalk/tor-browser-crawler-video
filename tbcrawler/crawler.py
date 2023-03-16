@@ -190,7 +190,7 @@ class VideoCrawler(object):
             video = self.driver.find_element(By.ID, "videoPlayer")
             wl_log.info("Pressing play.")
             ActionChains(self.driver).click(video).perform()
-            sleep(20)
+            sleep(30)
             # screenshot of the ad and skip button (or lack of one)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
