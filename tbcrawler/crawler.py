@@ -103,12 +103,6 @@ class VideoCrawler(object):
             ActionChains(self.driver).send_keys(Keys.TAB * 4 + Keys.ENTER).perform()
             sleep(5)
 
-        # press play for both Tor Browser and Firefox
-        wl_log.info('Trying to press play.')
-        ActionChains(self.driver).send_keys('k').perform()
-        time_0 = time()
-        sleep(20)
-
         # try to get an initial player status to see if this Tor
         # exit relay is blocked
         try:
@@ -119,10 +113,20 @@ class VideoCrawler(object):
             wl_log.info("Probably on the 'detected unusual traffic' page.")
             return False
 
+        # press play if not playing already
+        if player_status != 1:
+            wl_log.info('Trying to press play.')
+            ActionChains(self.driver).send_keys('k').perform()
+        else:
+            wl_log.info('Player status: playing')
+        time_0 = time()
+        sleep(20)
+
         # if it's still unstarted, we're watching an ad,
         # so let's skip it if possible like a human would do
+        player_status = self.driver.execute_script(js)
         if player_status == -1:
-            wl_log.info("Must be an ad. We'll try to skip it.")
+            wl_log.info("Player status: unstarted. Must be an ad. We'll try to skip it.")
             # screenshot of the ad and skip button (or lack of one)
             if self.screenshots:
                 wl_log.info("Trying to take a screenshot.")
@@ -138,7 +142,7 @@ class VideoCrawler(object):
                 wl_log.error("Can't skip the ad.")
             sleep(5)
             player_status = self.driver.execute_script(js)
-            wl_log.debug('Updated player status: {}'
+            wl_log.debug('Player status: {}'
                          .format(status_to_string[player_status]))
 
         # starting screenshot
