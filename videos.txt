@@ -3,7 +3,7 @@
 ########################
 
 # youtube 0-9
-https://www.youtube.com/watch?v=zi5Z6rNU9Hw,194
+https://www.youtube.com/watch?v=tkaYamHSyt4,293
 https://www.youtube.com/watch?v=Egzz5L1ZUZ0,228
 https://www.youtube.com/watch?v=bx7PdmKIC3U,316
 https://www.youtube.com/watch?v=L0MK7qz13bU,242
@@ -107,7 +107,7 @@ https://rumble.com/v2cfl5e-wild-jets-38-nhl-highlights-2023.html,537
 ################
 
 # youtube 80-89
-https://www.youtube.com/watch?v=RQ9_TKayu9s,312
+https://www.youtube.com/watch?v=5QTZA94mgIg,257
 https://www.youtube.com/watch?v=5GJWxDKyk3A,315
 https://www.youtube.com/watch?v=E1mU6h4Xdxc,261
 https://www.youtube.com/watch?v=QcIy9NiNbmo,244
