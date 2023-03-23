@@ -315,11 +315,11 @@ https://rumble.com/v2d0kly-calculus-3.1-part-2.html,1029
 ###########################
 
 # youtube (kids round 2 for tor) 240-249 same as 0-9
-https://www.youtube.com/watch?v=zi5Z6rNU9Hw,194
+https://www.youtube.com/watch?v=tkaYamHSyt4,293
 https://www.youtube.com/watch?v=Egzz5L1ZUZ0,228
 https://www.youtube.com/watch?v=bx7PdmKIC3U,316
 https://www.youtube.com/watch?v=L0MK7qz13bU,242
-https://www.youtube.com/watch?v=RTWhvp_OD6s,209
+https://www.youtube.com/watch?v=msvOUUgv6m8,197
 https://www.youtube.com/watch?v=ulsjuiFO2J0,207
 https://www.youtube.com/watch?v=GhFS3H2ejNA,213
 https://www.youtube.com/watch?v=m8jrFbNFRrM,252
@@ -339,7 +339,7 @@ https://www.youtube.com/watch?v=vQQSAXScHGA,484
 https://www.youtube.com/watch?v=-bS2RhP0w7k,475
 
 # youtube (music round 2 for tor) 260-269 same as 80-89
-https://www.youtube.com/watch?v=RQ9_TKayu9s,312
+https://www.youtube.com/watch?v=5QTZA94mgIg,257
 https://www.youtube.com/watch?v=5GJWxDKyk3A,315
 https://www.youtube.com/watch?v=E1mU6h4Xdxc,261
 https://www.youtube.com/watch?v=QcIy9NiNbmo,244
@@ -347,7 +347,7 @@ https://www.youtube.com/watch?v=Eo-KmOd3i7s,238
 https://www.youtube.com/watch?v=j8fHNdrZTSI,459
 https://www.youtube.com/watch?v=bnVUHWCynig,224
 https://www.youtube.com/watch?v=LjhCEhWiKXk,236
-https://www.youtube.com/watch?v=1lyu1KKwC74,275
+https://www.youtube.com/watch?v=MSywJt3VlUM,278
 https://www.youtube.com/watch?v=C-u5WLJ9Yk4,237
 
 # youtube (news round 2 for tor) 270-279 same as 120-129
