@@ -81,7 +81,7 @@ class VideoCrawler(object):
                     self.driver.get(self.job.url)
                     if 'youtube' in self.job.url:
                         return self._visit_youtube()
-                    else: # it's Vimeo, Dailymotion, or Rumble
+                    else: # it's Vimeo, Facebook, or Rumble
                         return self._visit_other()
             except (cm.HardTimeoutException, TimeoutException):
                 wl_log.error("Visit to %s reached hard timeout!", self.job.url)
@@ -181,11 +181,11 @@ class VideoCrawler(object):
             play_button_xpath = "//button[@aria-label='Play']"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
 
-        elif 'dailymotion' in self.job.url:
-            # Dailymotion will autoplay, but we'll wait for some elements to load before we
+        elif 'facebook' in self.job.url:
+            # Facebook will autoplay, but we'll wait for some elements to load before we
             # start the clock, so we don't end the capture too early
             wl_log.info("Waiting up to 30 seconds for the Like button to appear.")
-            like_button_xpath = "/html/body/div[1]/div/main/div[1]/div/div/div[1]/div/div[2]/div/div/div/div[1]/div[5]/div/div/button[1]"
+            like_button_xpath = "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[2]/div[1]/div/div/div[1]/div[2]/div[2]/div/div/div[1]/div/div[1]"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, like_button_xpath)))
 
         elif 'rumble' in self.job.url:
@@ -211,7 +211,7 @@ class VideoCrawler(object):
                 skip_button_xpath = "//button[@aria-label='Skip Ad']"
                 skip_button = self.driver.find_element(By.XPATH, skip_button_xpath)
                 ActionChains(self.driver).click(skip_button).perform()
-            except WebDriverException:
+            except Exception:
                 wl_log.error("No ad playing, or can't skip it.")
             finally:
                 self.driver.switch_to.default_content()

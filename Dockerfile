@@ -27,7 +27,7 @@ ENV PATH /bin/geckodriver:$PATH
 
 # add setup.py
 RUN git clone https://gist.github.com/timwalsh300/e611e4e18e4e5911eee0b3252318804d.git /home/docker/tbb_setup
-RUN python3 /home/docker/tbb_setup/setup.py 12.0.3
+RUN python3 /home/docker/tbb_setup/setup.py 12.0.4
 
 # Set the display
 ENV DISPLAY $DISPLAY

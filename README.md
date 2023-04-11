@@ -2,8 +2,8 @@ tor-browser-crawler-video
 ===============
 
 This is a fork of the [tor-browser-crawler](https://github.com/webfp/tor-browser-crawler). The original fork was by Nate Mathews. Danny Campuzano forked it from him. I forked it 
-from Danny to update it for the YouTube, Dailymotion, Vimeo, and Rumble interfaces in late 2022, early 2023, and add functionality to crawl the same platforms without using Tor. 
-I'm running an Ubuntu Server 22.04 VM with 2 CPUs and 1 or 2 GB of RAM.
+from Danny to update it for the YouTube, Dailymotion, Vimeo, Rumble, and Facebook Watch interfaces between late 2022 and early 2023, and add functionality to crawl the same 
+platforms without using Tor. I'm running Ubuntu Server 22.04 VMs with 2 CPUs and 1 or 2 GB of RAM.
 
 #### Steps
 1. Install Docker
@@ -25,7 +25,7 @@ sudo apt install make
 make build
 ```
 3. Setup your crawl configuration files
-    * replace the contents of videos.txt with your list of YouTube, Dailymotion, Vimeo, and Rumble URLs to crawl, followed by a comma and the duration in seconds
+    * replace the contents of videos.txt with your list of YouTube, Facebook Watch, Vimeo, and Rumble URLs to crawl, followed by a comma and the duration in seconds
     * edit Makefile to use the correct network interface (find yours with `ip link`)
     * if you're crawling long videos, adjust the `--timeout` value in Makefile
     * make any desired changes to config.ini
@@ -36,24 +36,28 @@ make build
 
 ## Notes
 * Software and Library Versions
-    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.3 with geckodriver v0.32.2
+    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.4 with geckodriver v0.32.2
     * I've changed the Docker base image from python:2.7 to debian:sid-slim for the latest Python3 and selenium, tbselenium, etc. packages
     * Debian Sid also provides the latest Firefox ESR and uBlock Origin for the `run-without-tor` option
     * To use another TBB version, change the version number in Dockerfile and do another `make build`
     * Leaving the version number blank to get the latest version of TBB no longer works
 
-* I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended`, and then when the fraction of the video loaded 
-reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it gets the 
+* I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended`. For a while I used when the fraction of the video 
+loaded reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it gets the 
 `detected unusual traffic` page from YouTube or if it doesn't see certain page elements (depending on the platform) within 30 seconds, in which cases it just deletes the whole 
 subdirectory in `results` for that visit.
 
 * About 50% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 50% of the time, it will show a `Before you continue 
-to YouTube` banner about cookies, preventing more than about 6 MB of the video from loading. The crawler tries to reject cookies and press play. Without Tor, the cookie banner 
+to YouTube` banner about cookies, preventing most of the video from loading. The crawler tries to reject cookies and press play. Without Tor, the cookie banner 
 doesn't appear but the crawler still needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad(s) 
 like a human would do after waiting 20 seconds.
 
-* Dailymotion and Vimeo don't show many ads when using the Tor Browser. Dailymotion will autoplay, but the crawler needs to press play on Vimeo. Rumble requires the crawler to 
-press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 20 seconds.
+* Facebook Watch and Vimeo don't show many ads when using the Tor Browser. Facebook Watch will autoplay. Sometimes it shows a banner asking about cookies, but the video will 
+load and play to completion behind it. The crawler supports accessing videos either through a facebook.com URL or a 
+facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion URL when using Tor. The crawler needs to press play on Vimeo. Rumble requires the crawler to press play, and it 
+shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 20 seconds. At some point in 
+early 2023, Dailymotion stopped working over Tor. The page loads but the video player hangs on `Loading Ad`. So I've removed support for crawling Dailymotion. Before this, it 
+would autoplay and didn't show ads on Tor.
 
 * I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending 
 on the threat model used. We don't need the encrypted payloads for anything, and they would require orders-of-magnitude more storage space.
