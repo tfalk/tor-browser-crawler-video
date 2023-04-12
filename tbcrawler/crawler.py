@@ -93,6 +93,7 @@ class VideoCrawler(object):
     def _visit_youtube(self):
         status_to_string = ['ended', 'playing', 'paused', 'buffering', 'none', 'queued', 'unstarted']
         js = "return document.getElementById('movie_player').getPlayerState()"
+        skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
         player_status = 4
         screenshot_count = 0
         sleep(5)
@@ -120,30 +121,7 @@ class VideoCrawler(object):
         else:
             wl_log.info('Player status: playing')
         time_0 = time()
-        sleep(20)
-
-        # if it's still unstarted, we're watching an ad,
-        # so let's skip it if possible like a human would do
-        player_status = self.driver.execute_script(js)
-        if player_status == -1:
-            wl_log.info("Player status: unstarted. Must be an ad. We'll try to skip it.")
-            # screenshot of the ad and skip button (or lack of one)
-            if self.screenshots:
-                wl_log.info("Trying to take a screenshot.")
-                try:
-                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                    screenshot_count += 1
-                except WebDriverException:
-                    wl_log.error("Cannot get screenshot.")
-            try:
-                skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
-                self.driver.find_element(By.XPATH, skip_button_xpath).click()
-            except WebDriverException:
-                wl_log.error("Can't skip the ad.")
-            sleep(5)
-            player_status = self.driver.execute_script(js)
-            wl_log.debug('Player status: {}'
-                         .format(status_to_string[player_status]))
+        sleep(10)
 
         # starting screenshot
         if self.screenshots:
@@ -155,6 +133,13 @@ class VideoCrawler(object):
                 wl_log.error("Cannot get screenshot.")
 
         while True:
+            # try to press the ad skip button
+            try:
+                button = self.driver.find_element(By.XPATH, skip_button_xpath)
+                ActionChains(self.driver).click(button).perform()
+                wl_log.info("Pressed Skip Ad button.")
+            except WebDriverException:
+                pass
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
             wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
             # end when the video should end, or after 6 minutues, whichever is sooner

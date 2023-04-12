@@ -48,16 +48,16 @@ loaded reached 1. Now, for all platforms, it ends after the expected playback du
 subdirectory in `results` for that visit.
 
 * About 50% of the time when using the Tor Browser, YouTube will serve a page saying `detected unusual traffic`. The other 50% of the time, it will show a `Before you continue 
-to YouTube` banner about cookies, preventing most of the video from loading. The crawler tries to reject cookies and press play. Without Tor, the cookie banner 
-doesn't appear but the crawler still needs to press play. If playback is still `unstarted` at that point, it's because an ad is playing, so the crawler tries skipping the ad(s) 
-like a human would do after waiting 20 seconds.
+to YouTube` banner about cookies, preventing most of the video from loading. The crawler first blindly tries to reject cookies, and then checks to see if there's a video player. 
+If there's no player, it terminates the visit. If there's a player but the video isn't playing, it presses play.  Without Tor, the cookie banner doesn't appear but the crawler 
+still needs to press play. After that, it looks for the button to skip ad(s) every ten seconds and presses it if found, so this handles both pre-roll and mid-roll ads like a 
+human would do.
 
-* Facebook Watch and Vimeo don't show many ads when using the Tor Browser. Facebook Watch will autoplay. Sometimes it shows a banner asking about cookies, but the video will 
-load and play to completion behind it. The crawler supports accessing videos either through a facebook.com URL or a 
-facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion URL when using Tor. The crawler needs to press play on Vimeo. Rumble requires the crawler to press play, and it 
-shows a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 20 seconds. At some point in 
-early 2023, Dailymotion stopped working over Tor. The page loads but the video player hangs on `Loading Ad`. So I've removed support for crawling Dailymotion. Before this, it 
-would autoplay and didn't show ads on Tor.
+* Facebook Watch and Vimeo don't show ads when using the Tor Browser. Facebook Watch will autoplay. Sometimes it shows a banner asking about cookies, but the video will load and 
+play to completion behind it. The crawler supports accessing videos either through a facebook.com URL or a facebookwkhpilnemxj7asaniu7vnjjbiltxjqhye3mhbshg7kx5tfyd.onion URL 
+when using Tor. The crawler needs to press play on Vimeo. Rumble requires the crawler to press play, and it shows a lot of ads (even with uBlock Origin for the `run-without-tor` 
+option), which the crawler tries to skip like a human would do after waiting 20 seconds. At some point in early 2023, Dailymotion stopped working over Tor; the page loads but 
+the video player hangs on `Loading Ad`, so I've removed support for crawling Dailymotion. Before this, Dailymotion would autoplay and didn't show ads on Tor.
 
 * I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending 
 on the threat model used. We don't need the encrypted payloads for anything, and they would require orders-of-magnitude more storage space.
