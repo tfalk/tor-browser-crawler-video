@@ -121,7 +121,7 @@ class VideoCrawler(object):
         else:
             wl_log.info('Player status: playing')
         time_0 = time()
-        sleep(10)
+        sleep(3)
 
         # starting screenshot
         if self.screenshots:
@@ -138,6 +138,13 @@ class VideoCrawler(object):
                 button = self.driver.find_element(By.XPATH, skip_button_xpath)
                 ActionChains(self.driver).click(button).perform()
                 wl_log.info("Pressed Skip Ad button.")
+                if self.screenshots:
+                    wl_log.info("Trying to take a screenshot.")
+                    try:
+                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
+                        screenshot_count += 1
+                    except WebDriverException:
+                        wl_log.error("Cannot get screenshot.")
             except WebDriverException:
                 pass
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")

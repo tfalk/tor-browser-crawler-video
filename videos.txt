@@ -263,52 +263,52 @@ https://rumble.com/v2193bs-relaxing-nature-walk.html,224
 ########################
 
 # youtube 200-209
-https://www.youtube.com/watch?v=uvR_4UCqxrw,914
-https://www.youtube.com/watch?v=b2SeBpCrj4U,1213
-https://www.youtube.com/watch?v=876ApCl7iaM,863
-https://www.youtube.com/watch?v=fPO0MdM3_rc,1016
-https://www.youtube.com/watch?v=MmVxVCjO6pQ,932
-https://www.youtube.com/watch?v=u2_LhVYGLZg,810
-https://www.youtube.com/watch?v=KtpnyGBl7aE,1419
-https://www.youtube.com/watch?v=Svg-U3NEd1s,497
-https://www.youtube.com/watch?v=Vl0XOMWbvug,1382
-https://www.youtube.com/watch?v=Jopg9mlknOQ,1030
+https://www.youtube.com/watch?v=B_lcFkD3A7Q,915
+https://www.youtube.com/watch?v=dfSJ66u6A-Q,1565
+https://www.youtube.com/watch?v=tEvWu9cE5SQ,913
+https://www.youtube.com/watch?v=5qFCIJXJoX8,1017
+https://www.youtube.com/watch?v=k-JYkw7CiXY,1160
+https://www.youtube.com/watch?v=J881dPTAGb4,912
+https://www.youtube.com/watch?v=Bd4IBDWI21c,1420
+https://www.youtube.com/watch?v=R8tUS4pU5FA,513
+https://www.youtube.com/watch?v=f4qLx82HmPk,1414
+https://www.youtube.com/watch?v=iTfQvKubHa0,1034
 
 # facebook 210-219
-
-
-
-https://www.facebook.com/100091402491682/videos/899779941253921,1016
-https://www.facebook.com/100091402491682/videos/859555838963178,932
-
-
-https://www.facebook.com/100091402491682/videos/242863721436429,497
-
-
+https://www.facebook.com/100092154750530/videos/257529866645611,915
+https://www.facebook.com/100092154750530/videos/187240820442567,1565
+https://www.facebook.com/100092154750530/videos/1269839910280838,912
+https://www.facebook.com/100092154750530/videos/172569258645610,1016
+https://www.facebook.com/100092154750530/videos/1380802522676964,1159
+https://www.facebook.com/100092154750530/videos/896727198080632,911
+https://www.facebook.com/100092154750530/videos/154454650903853,1419
+https://www.facebook.com/100092154750530/videos/944709103539356,512
+https://www.facebook.com/100092154750530/videos/2202628929942946,1413
+https://www.facebook.com/100092154750530/videos/6118010094955182,1033
 
 # vimeo 220-229
-https://vimeo.com/807660120,913
-https://vimeo.com/807658592,1212
-https://vimeo.com/807660022,862
-https://vimeo.com/807658518,1015
-https://vimeo.com/807658445,931
-https://vimeo.com/807659949,809
-https://vimeo.com/807641623,1418
-https://vimeo.com/807659894,496
-https://vimeo.com/807638364,1381
-https://vimeo.com/807660203,1029
+https://vimeo.com/819302463,914
+https://vimeo.com/818981106,1564
+https://vimeo.com/818933305,912
+https://vimeo.com/819230914,1016
+https://vimeo.com/819302583,1159
+https://vimeo.com/818932837,911
+https://vimeo.com/818981691,1419
+https://vimeo.com/818935098,512
+https://vimeo.com/819230593,1413
+https://vimeo.com/818934753,1033
 
 # rumble 230-239
-https://rumble.com/v2d0l2c-geometry-unit-2-lesson-1.html,913
-https://rumble.com/v2d0iru-calculus-3.5.html,1212
-https://rumble.com/v2d0ldq-calculus-3.1-part-1.html,862
-https://rumble.com/v2d0jbu-calculus-4.4.html,1015
-https://rumble.com/v2d0k1o-geometry-unit-2-lesson-2.html,931
-https://rumble.com/v2d0lls-calculus-2.4-part-1.html,809
-https://rumble.com/v2d0idy-calculus-3.7-part-1.html,1418
-https://rumble.com/v2d0ls6-calculus-3.2-part-1.html,496
-https://rumble.com/v2d0gna-calculus-4.3-part-1.html,1381
-https://rumble.com/v2d0kly-calculus-3.1-part-2.html,1029
+https://rumble.com/v2j1x9m-geometry-2-lesson-1-hq.html,914
+https://rumble.com/v2j1sxa-calculus-3.5-hq.html,1564
+https://rumble.com/v2j1pxy-calculus-3.1-part-1-hq.html,912
+https://rumble.com/v2j1we4-calculus-4.4.html,1016
+https://rumble.com/v2j1xxc-geometry-2-lesson-2-hq.html,1159
+https://rumble.com/v2j1n76-calculus-2.4-part-1-hq.html,911
+https://rumble.com/v2j1u58-calculus-3.7-part-1-hq.html,1419
+https://rumble.com/v2j1s5a-calculus-3.2-part-1-hq.html,512
+https://rumble.com/v2j1vkk-calculus-4.3-part-1-hq.html,1413
+https://rumble.com/v2j1qy4-calculus-3.1-part-2-hq.html,1033
 
 ###########################
 # youtube round 2 for tor #
@@ -375,13 +375,13 @@ https://www.youtube.com/watch?v=QP37rnwa-UY,204
 https://www.youtube.com/watch?v=f1dnocPQXDQ,255
 
 # youtube (instructional round 2 for tor) 290-299 same as 200-209
-https://www.youtube.com/watch?v=uvR_4UCqxrw,914
-https://www.youtube.com/watch?v=b2SeBpCrj4U,1213
-https://www.youtube.com/watch?v=876ApCl7iaM,863
-https://www.youtube.com/watch?v=fPO0MdM3_rc,1016
-https://www.youtube.com/watch?v=MmVxVCjO6pQ,932
-https://www.youtube.com/watch?v=u2_LhVYGLZg,810
-https://www.youtube.com/watch?v=KtpnyGBl7aE,1419
-https://www.youtube.com/watch?v=Svg-U3NEd1s,497
-https://www.youtube.com/watch?v=Vl0XOMWbvug,1382
-https://www.youtube.com/watch?v=Jopg9mlknOQ,1030
+https://www.youtube.com/watch?v=B_lcFkD3A7Q,915
+https://www.youtube.com/watch?v=dfSJ66u6A-Q,1565
+https://www.youtube.com/watch?v=tEvWu9cE5SQ,913
+https://www.youtube.com/watch?v=5qFCIJXJoX8,1017
+https://www.youtube.com/watch?v=k-JYkw7CiXY,1160
+https://www.youtube.com/watch?v=J881dPTAGb4,912
+https://www.youtube.com/watch?v=Bd4IBDWI21c,1420
+https://www.youtube.com/watch?v=R8tUS4pU5FA,513
+https://www.youtube.com/watch?v=f4qLx82HmPk,1414
+https://www.youtube.com/watch?v=iTfQvKubHa0,1034
