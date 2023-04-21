@@ -166,12 +166,15 @@ class VideoCrawler(object):
 
     def _visit_other(self):
         screenshot_count = 0
+        # initialize time_0 variable here but reset it later
+        time_0 = time()
 
         if 'vimeo' in self.job.url:
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
             wl_log.info("Waiting up to 30 seconds to click the play button.")
             play_button_xpath = "//button[@aria-label='Play']"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
+            time_0 = time()
 
         elif 'facebook' in self.job.url:
             # Facebook will autoplay, but we'll wait for some elements to load before we
@@ -179,6 +182,7 @@ class VideoCrawler(object):
             wl_log.info("Waiting up to 30 seconds for the Like button to appear.")
             like_button_xpath = "/html/body/div[1]/div/div[1]/div/div[3]/div/div/div/div[1]/div[2]/div[1]/div/div/div[1]/div[2]/div[2]/div/div/div[1]/div/div[1]"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, like_button_xpath)))
+            time_0 = time()
 
         elif 'rumble' in self.job.url:
             wl_log.info("Waiting up to 30 seconds for the video player to appear.")
@@ -186,6 +190,7 @@ class VideoCrawler(object):
             video = self.driver.find_element(By.ID, "videoPlayer")
             wl_log.info("Pressing play.")
             ActionChains(self.driver).click(video).perform()
+            time_0 = time()
             sleep(30)
             # screenshot of the ad and skip button (or lack of one)
             if self.screenshots:
@@ -208,7 +213,6 @@ class VideoCrawler(object):
             finally:
                 self.driver.switch_to.default_content()
 
-        time_0 = time()
         sleep(3)
         # starting screenshot
         if self.screenshots:
