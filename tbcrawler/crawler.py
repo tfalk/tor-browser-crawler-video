@@ -96,6 +96,8 @@ class VideoCrawler(object):
         skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
         player_status = 4
         screenshot_count = 0
+        ten_seconds_ago = -10.0
+        twenty_seconds_ago = -10.0
         sleep(5)
 
         # deal with the cookies banner only if using the Tor Browser
@@ -149,6 +151,8 @@ class VideoCrawler(object):
                 pass
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
             wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
+            if (loaded_fraction + ten_seconds_ago + twenty_seconds_ago) == 0.0:
+                return False
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
@@ -163,6 +167,8 @@ class VideoCrawler(object):
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
             sleep(10)
+            twenty_seconds_ago = ten_seconds_ago
+            ten_seconds_ago = loaded_fraction
 
     def _visit_other(self):
         screenshot_count = 0
