@@ -36,7 +36,7 @@ make build
 
 ## Notes
 * Software and Library Versions
-    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.4 with geckodriver v0.32.2
+    * This project was originally frozen to v8.0.2 of the TBB, and I've updated it to v12.0.5 with geckodriver v0.32.2
     * I've changed the Docker base image from python:2.7 to debian:sid-slim for the latest Python3 and selenium, tbselenium, etc. packages
     * Debian Sid also provides the latest Firefox ESR and uBlock Origin for the `run-without-tor` option
     * To use another TBB version, change the version number in Dockerfile and do another `make build`
