@@ -194,28 +194,20 @@ class VideoCrawler(object):
             wl_log.info("Waiting up to 30 seconds for the video player to appear.")
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.ID, "videoPlayer")))
             video = self.driver.find_element(By.ID, "videoPlayer")
-            wl_log.info("Pressing play.")
             ActionChains(self.driver).click(video).perform()
+            wl_log.info("Pressed play.")
             time_0 = time()
             sleep(30)
-            # screenshot of the ad and skip button (or lack of one)
-            if self.screenshots:
-                wl_log.info("Trying to take a screenshot.")
-                try:
-                    self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                    screenshot_count += 1
-                except WebDriverException:
-                    wl_log.error("Cannot get screenshot.")
             # deal with Rumble ads which appear in an iframe
             try:
-                wl_log.info("Trying to skip ad if possible.")
                 iframe = self.driver.find_elements(By.TAG_NAME,'iframe')[0]
                 self.driver.switch_to.frame(iframe)
                 skip_button_xpath = "//button[@aria-label='Skip Ad']"
                 skip_button = self.driver.find_element(By.XPATH, skip_button_xpath)
                 ActionChains(self.driver).click(skip_button).perform()
-            except Exception:
-                wl_log.info("No ad playing, or can't skip it.")
+                wl_log.info("Pressed Skip Ad button.")
+            except:
+                pass
             finally:
                 self.driver.switch_to.default_content()
 
