@@ -96,33 +96,44 @@ class VideoCrawler(object):
         skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
         player_status = 4
         screenshot_count = 0
-        ten_seconds_ago = -10.0
-        twenty_seconds_ago = -10.0
+        time_0 = time()
         sleep(5)
 
-        # deal with the cookies banner only if using the Tor Browser
+        # deal with the cookies banner or page only if using the Tor Browser
         if self.controller is not None:
-            wl_log.info('Trying to reject cookies.')
-            ActionChains(self.driver).send_keys(Keys.TAB * 4 + Keys.ENTER).perform()
-            sleep(5)
+            try:
+                reject_button_xpath = "//button[@aria-label='Reject the use of cookies and other data for the purposes described']"
+                reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
+                ActionChains(self.driver).click(reject_button).perform()
+                wl_log.info('Pressed Reject on cookies banner.')
+                sleep(5)
+            except:
+                try:
+                    reject_button_xpath = "//button[@aria-label='Reject all']"
+                    reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
+                    ActionChains(self.driver).click(reject_button).perform()
+                    wl_log.info('Pressed Reject on cookies page.')
+                    sleep(5)
+                except:
+                    pass
 
         # try to get an initial player status to see if this Tor
         # exit relay is blocked
         try:
-            wl_log.info('Trying to get initial player status.')
             player_status = self.driver.execute_script(js)
         except WebDriverException:
             wl_log.error('Failed to get player status')
             wl_log.info("Probably on the 'detected unusual traffic' page.")
             return False
 
-        # press play if not playing already
-        if player_status != 1:
-            wl_log.info('Trying to press play.')
-            ActionChains(self.driver).send_keys('k').perform()
-        else:
-            wl_log.info('Player status: playing')
-        time_0 = time()
+        # press play button if necessary
+        play_button_xpath = "//button[@aria-label='Play']"
+        try:
+            play_button = self.driver.find_element(By.XPATH, play_button_xpath)
+            ActionChains(self.driver).click(play_button).perform()
+            wl_log.info('Pressed play button.')
+        except:
+            pass
         sleep(3)
 
         # starting screenshot
@@ -135,24 +146,15 @@ class VideoCrawler(object):
                 wl_log.error("Cannot get screenshot.")
 
         while True:
-            # try to press the ad skip button
+            # try to press the skip ad button
             try:
                 button = self.driver.find_element(By.XPATH, skip_button_xpath)
                 ActionChains(self.driver).click(button).perform()
                 wl_log.info("Pressed Skip Ad button.")
-                if self.screenshots:
-                    wl_log.info("Trying to take a screenshot.")
-                    try:
-                        self.driver.get_screenshot_as_file(self.job.png_file(screenshot_count))
-                        screenshot_count += 1
-                    except WebDriverException:
-                        wl_log.error("Cannot get screenshot.")
             except WebDriverException:
                 pass
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
             wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
-            if (loaded_fraction + ten_seconds_ago + twenty_seconds_ago) == 0.0:
-                return False
             # end when the video should end, or after 6 minutues, whichever is sooner
             elapsed_time = time() - time_0
             if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
@@ -167,8 +169,6 @@ class VideoCrawler(object):
                 wl_log.info("Ending successful visit after " + str(time() - time_0) + " seconds.")
                 return True
             sleep(10)
-            twenty_seconds_ago = ten_seconds_ago
-            ten_seconds_ago = loaded_fraction
 
     def _visit_other(self):
         screenshot_count = 0
@@ -215,7 +215,7 @@ class VideoCrawler(object):
                 skip_button = self.driver.find_element(By.XPATH, skip_button_xpath)
                 ActionChains(self.driver).click(skip_button).perform()
             except Exception:
-                wl_log.error("No ad playing, or can't skip it.")
+                wl_log.info("No ad playing, or can't skip it.")
             finally:
                 self.driver.switch_to.default_content()
 
