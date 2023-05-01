@@ -1,7 +1,8 @@
 # Pull base image.
-# Debian Sid gets us an up-to-date version of everything and
-# slim saves disk space by excluding a lot packages that we don't need
-FROM debian:sid-slim
+# Debian Bookworm gets us a farily up-to-date version of everything and
+# a few years of stability, and slim saves disk space by excluding a
+# lot packages that we don't need
+FROM debian:bookworm-slim
 
 # Install required packages.
 RUN apt-get update
