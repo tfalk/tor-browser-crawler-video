@@ -178,9 +178,9 @@ https://www.facebook.com/RBReich/videos/276441922999615,191
 https://www.facebook.com/msnbc/videos/799441655121784,236
 https://www.facebook.com/msnbc/videos/961520961641100,213
 https://www.facebook.com/100089726838093/videos/1256344435009575,317
-https://www.facebook.com/100090033876487/videos/168226505647944,382
-https://www.facebook.com/100091093794603/videos/146337491473879,484
-https://www.facebook.com/100069147645439/videos/776325524090781,499
+https://www.facebook.com/100091508902625/videos/793227062016074,618
+https://www.facebook.com/100091508902625/videos/953255499203278,554
+https://www.facebook.com/100091508902625/videos/105016545920597,427
 
 # vimeo 140-149
 https://vimeo.com/763500351,221
