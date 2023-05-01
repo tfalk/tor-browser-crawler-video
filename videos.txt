@@ -1,6 +1,6 @@
-########################
-# kids' animated clips #
-########################
+###################
+# kids' animation #
+###################
 
 # youtube 0-9
 https://www.youtube.com/watch?v=tkaYamHSyt4,293
@@ -102,57 +102,57 @@ https://rumble.com/v1z041o-estonia-germany-basketball-highlights-fibawc-2023-qua
 https://rumble.com/v2autje--tunisia-vs-egypt-basketball-highlights-fibawc-2023-qualifiers.html,186
 https://rumble.com/v2cfl5e-wild-jets-38-nhl-highlights-2023.html,537
 
-################
-# music videos #
-################
+######################
+# orchestra concerts #
+######################
 
 # youtube 80-89
-https://www.youtube.com/watch?v=5QTZA94mgIg,257
-https://www.youtube.com/watch?v=5GJWxDKyk3A,315
-https://www.youtube.com/watch?v=E1mU6h4Xdxc,261
-https://www.youtube.com/watch?v=QcIy9NiNbmo,244
-https://www.youtube.com/watch?v=Eo-KmOd3i7s,238
-https://www.youtube.com/watch?v=j8fHNdrZTSI,459
-https://www.youtube.com/watch?v=bnVUHWCynig,224
-https://www.youtube.com/watch?v=LjhCEhWiKXk,236
-https://www.youtube.com/watch?v=MSywJt3VlUM,278
-https://www.youtube.com/watch?v=C-u5WLJ9Yk4,237
+https://www.youtube.com/watch?v=6zTc2hD2npA,427
+https://www.youtube.com/watch?v=2bFo65szAP0,2652
+https://www.youtube.com/watch?v=eVy126sGK5A,3059
+https://www.youtube.com/watch?v=0Cg_0jepxow,2987
+https://www.youtube.com/watch?v=EJC-_j3SnXk,218
+https://www.youtube.com/watch?v=w_TaNm6lccQ,398
+https://www.youtube.com/watch?v=TvHsN5-YBLI,230
+https://www.youtube.com/watch?v=IaskxKfeFno,3819
+https://www.youtube.com/watch?v=oVzw7Z-OZT4,535
+https://www.youtube.com/watch?v=aCFnzSCzoYA,425
 
 # facebook 90-99
-https://www.facebook.com/joshturner/videos/1787419688085846,214
-https://www.facebook.com/OfficialAlanJackson/videos/2468981536579269,380
-https://www.facebook.com/binomiodeorooficial/videos/264068988740123,267
-https://www.facebook.com/bizarrap/videos/736524024553997,218
-https://www.facebook.com/blackeyedpeas/videos/605364031312069,255
-https://www.facebook.com/bizarrap/videos/620056656215723,204
-https://www.facebook.com/marshmello/videos/218977044015977,311
-https://www.facebook.com/officialdjkhaled/videos/510213540136230,485
-https://www.facebook.com/Hardy/videos/1452539415250109,300
-https://www.facebook.com/Metallica/videos/975431316552639,332
+https://www.facebook.com/capedwondersupermanpodcast/videos/742097937274946,290
+https://www.facebook.com/100064045110294/videos/1936567656606252,373
+https://www.facebook.com/lamusicaconectaoficial/videos/1138004226883766,1311
+https://www.facebook.com/AyuLiveVideo/videos/529564526044317,358
+https://www.facebook.com/baltimoresymphonyyouthorchestras/videos/671142381683557,1073
+https://www.facebook.com/Colouringpast/videos/302911157360816,182
+https://www.facebook.com/IAmTheMusicMan/videos/447055027584253,193
+https://www.facebook.com/saregama/videos/774166140127058,372
+https://www.facebook.com/risvasantkunj/videos/527725734756002,439
+https://www.facebook.com/National.Symphony/videos/10156264050838290,253
 
 # vimeo 100-109
-https://vimeo.com/20115331,216
-https://vimeo.com/800098605,345
-https://vimeo.com/700421118,288
-https://vimeo.com/783918413,272
-https://vimeo.com/694205848,261
-https://vimeo.com/775988773,242
-https://vimeo.com/708354589,291
-https://vimeo.com/740172069,260
-https://vimeo.com/706701867,433
-https://vimeo.com/758606740,299
+https://vimeo.com/11717447,333
+https://vimeo.com/7954436,583
+https://vimeo.com/172845834,352
+https://vimeo.com/798433044,320
+https://vimeo.com/146552911,244
+https://vimeo.com/647954293,434
+https://vimeo.com/519685481,307
+https://vimeo.com/68370563,431
+https://vimeo.com/39929304,401
+https://vimeo.com/88916189,362
 
 # rumble 110-119
-https://rumble.com/v1r5gs2-alexis-wilkins-stand-official-music-video.html,209
-https://rumble.com/v2cfbv8-raelynn-broken-one.html,276
-https://rumble.com/v2aomei-alexis-wilkins-grit-official-music-video.html,183
-https://rumble.com/v27mf3a-ksi-not-over-yet-feat.-tom-grennan-official-music-video.html,186
-https://rumble.com/v26z25e-dax-searching-for-a-reason-official-music-video.html,207
-https://rumble.com/v27mf6w-ksi-number-2-feat.-future-and-21-savage-official-music-video.html,184
-https://rumble.com/v27e2ws-devour-make-it-home-ft.-g2-riko-official-music-video.html,185
-https://rumble.com/v26yrdc-american-authors-x-chad-tepper-timeless-official-music-video.html,200
-https://rumble.com/v26yrri-american-authors-x-cvbz-this-time-is-right-official-music-video.html,186
-https://rumble.com/v26yoje-oliver-tree-suitcase-full-of-cash-music-video.html,181
+https://rumble.com/vzrqk4-christmas-concert-musical-rimsky-korsakov-carl-otto-nicolai-ricardo-tacuchi.html,3232
+https://rumble.com/vxy3pb-christopher-muscat-festival-ouverture-mpo-moscow-tour.html,297
+https://rumble.com/vzkihc-ray-chen-violin-sergey-smbatyan-alexey-short-violin-concerto-phantasms-mpo-.html,743
+https://rumble.com/v1xolbs-yuja-wang-solo-piano-play-turkish-march-mozart.html,185
+https://rumble.com/v1nenuv-anastasia-huppmann-chopin-nocturne-op-48-no.1.html,441
+https://rumble.com/v1irul6-lucy-gilmore-scollag-aeg-manx-harp-music.html,184
+https://rumble.com/v1hbxtm-khatia-buniatishvili-hungarian-rhapsody-no.2.html,955
+https://rumble.com/vxy1ir-szymanowski-violin-concerto-no.-1.html,1314
+https://rumble.com/v10lrna-haik-kazazyan-and-philipp-kopachevsky-p-de-sarasate-concert-fantasy-on-them.html,683
+https://rumble.com/v12zs1k-concerto-in-d-major-for-violin-op.-35-tchaikovsky-and-the-firebird-stravins.html,3422
 
 ##################
 # news reporting #
@@ -300,15 +300,15 @@ https://vimeo.com/818934753,1033
 
 # rumble 230-239
 https://rumble.com/v2j1x9m-geometry-2-lesson-1-hq.html,914
-https://rumble.com/v2j1sxa-calculus-3.5-hq.html,1564
+https://rumble.com/v2laf92-calculus-3.5-higher.html,1564
 https://rumble.com/v2j1pxy-calculus-3.1-part-1-hq.html,912
 https://rumble.com/v2j1we4-calculus-4.4.html,1016
 https://rumble.com/v2j1xxc-geometry-2-lesson-2-hq.html,1159
 https://rumble.com/v2j1n76-calculus-2.4-part-1-hq.html,911
-https://rumble.com/v2j1u58-calculus-3.7-part-1-hq.html,1419
-https://rumble.com/v2j1s5a-calculus-3.2-part-1-hq.html,512
+https://rumble.com/v2lairu-calculus-3.7-part-1-higher.html,1419
+https://rumble.com/v2lad1c-calculus-3.2-part-1-higher.html,512
 https://rumble.com/v2j1vkk-calculus-4.3-part-1-hq.html,1413
-https://rumble.com/v2j1qy4-calculus-3.1-part-2-hq.html,1033
+https://rumble.com/v2lac70-calculus-3.1-part-2-higher.html,1033
 
 ###########################
 # youtube round 2 for tor #
@@ -338,17 +338,17 @@ https://www.youtube.com/watch?v=4v-rIjHpyEk,627
 https://www.youtube.com/watch?v=vQQSAXScHGA,484
 https://www.youtube.com/watch?v=-bS2RhP0w7k,475
 
-# youtube (music round 2 for tor) 260-269 same as 80-89
-https://www.youtube.com/watch?v=5QTZA94mgIg,257
-https://www.youtube.com/watch?v=5GJWxDKyk3A,315
-https://www.youtube.com/watch?v=E1mU6h4Xdxc,261
-https://www.youtube.com/watch?v=QcIy9NiNbmo,244
-https://www.youtube.com/watch?v=Eo-KmOd3i7s,238
-https://www.youtube.com/watch?v=j8fHNdrZTSI,459
-https://www.youtube.com/watch?v=bnVUHWCynig,224
-https://www.youtube.com/watch?v=LjhCEhWiKXk,236
-https://www.youtube.com/watch?v=MSywJt3VlUM,278
-https://www.youtube.com/watch?v=C-u5WLJ9Yk4,237
+# youtube (orchestras round 2 for tor) 260-269 same as 80-89
+https://www.youtube.com/watch?v=6zTc2hD2npA,427
+https://www.youtube.com/watch?v=2bFo65szAP0,2652
+https://www.youtube.com/watch?v=eVy126sGK5A,3059
+https://www.youtube.com/watch?v=0Cg_0jepxow,2987
+https://www.youtube.com/watch?v=EJC-_j3SnXk,218
+https://www.youtube.com/watch?v=w_TaNm6lccQ,398
+https://www.youtube.com/watch?v=TvHsN5-YBLI,230
+https://www.youtube.com/watch?v=IaskxKfeFno,3819
+https://www.youtube.com/watch?v=oVzw7Z-OZT4,535
+https://www.youtube.com/watch?v=aCFnzSCzoYA,425
 
 # youtube (news round 2 for tor) 270-279 same as 120-129
 https://www.youtube.com/watch?v=K7_DU2GhstY,299
