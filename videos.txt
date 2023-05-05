@@ -41,7 +41,7 @@ https://vimeo.com/1991600,339
 # rumble 30-39
 https://rumble.com/v29mpw4-daffy-duck-and-the-dinosaur-popcoorn-cartoon-daffyduck.html,472
 https://rumble.com/v1y8bx0-ghoul-friend-a-mickey-mouse-cartoon-disney-shows.html,227
-https://rumble.com/v1y8co8-not-a-cuddly-bear-we-baby-bears-cartoon-network-uk.html,219
+https://rumble.com/v290i6a-dont-eat-dirty-food-safety-cartoon-police-cartoon-sheriff-labrador-kids-car.html,2687
 https://rumble.com/v2c99wu-scalp-trouble-popcoorn-cartoon-daffyduck.html,396
 https://rumble.com/v27ld2k-popeye-the-sailor-man-hamburger-fishing-1960-classic-cartoon-series-full-hd.html,308
 https://rumble.com/v2cbxaw-an-orange-horse-the-cartoon.html,404
@@ -67,7 +67,7 @@ https://www.youtube.com/watch?v=vQQSAXScHGA,484
 https://www.youtube.com/watch?v=-bS2RhP0w7k,475
 
 # facebook 50-59
-https://www.facebook.com/100090795642347/videos/598067155540341,237
+https://www.facebook.com/100090302973891/videos/6904193546263048,684
 https://www.facebook.com/100090795642347/videos/1262376301321280,330
 https://www.facebook.com/morningusa/videos/390178061982659,580
 https://www.facebook.com/NFL/videos/2807287826152783,255
@@ -85,7 +85,7 @@ https://vimeo.com/69372972,250
 https://vimeo.com/189877156,256
 https://vimeo.com/308484782,256
 https://vimeo.com/737194018,334
-https://vimeo.com/776821040,322
+https://vimeo.com/163339101,201
 https://vimeo.com/764699974,337
 https://vimeo.com/776857282,268
 https://vimeo.com/803623779,259
@@ -190,7 +190,7 @@ https://vimeo.com/758960020,532
 https://vimeo.com/713507465,281
 https://vimeo.com/233561542,397
 https://vimeo.com/142310759,284
-https://vimeo.com/469307384,300
+https://vimeo.com/116062121,799
 https://vimeo.com/250129686,414
 https://vimeo.com/123346178,410
 
@@ -242,7 +242,7 @@ https://vimeo.com/741875864,406
 https://vimeo.com/744647987,351
 https://vimeo.com/777756489,341
 https://vimeo.com/702496113,383
-https://vimeo.com/706129298,307
+https://vimeo.com/188928938,288
 https://vimeo.com/707657705,282
 https://vimeo.com/757859567,340
 
