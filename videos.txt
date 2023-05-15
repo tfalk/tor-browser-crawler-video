@@ -136,7 +136,7 @@ https://vimeo.com/7954436,583
 https://vimeo.com/172845834,352
 https://vimeo.com/798433044,320
 https://vimeo.com/146552911,244
-https://vimeo.com/647954293,434
+https://vimeo.com/169406275,569
 https://vimeo.com/519685481,307
 https://vimeo.com/68370563,431
 https://vimeo.com/39929304,401
@@ -172,7 +172,7 @@ https://www.youtube.com/watch?v=zHUMm2qWfj8,217
 
 # facebook 130-139
 https://www.facebook.com/100069576430027/videos/371156923462649,413
-https://www.facebook.com/100090772967396/videos/1151828855504612,264
+https://www.facebook.com/NBCNews/videos/2334746413212042,272
 https://www.facebook.com/TheView/videos/232058831014003,205
 https://www.facebook.com/RBReich/videos/276441922999615,191
 https://www.facebook.com/msnbc/videos/799441655121784,236
