@@ -94,6 +94,7 @@ class VideoCrawler(object):
         status_to_string = ['ended', 'playing', 'paused', 'buffering', 'none', 'queued', 'unstarted']
         js = "return document.getElementById('movie_player').getPlayerState()"
         skip_button_xpath = "//button[@class='ytp-ad-skip-button ytp-button']"
+        play_button_xpath = "//button[@aria-label='Play']"
         player_status = 4
         screenshot_count = 0
         time_0 = time()
@@ -126,16 +127,6 @@ class VideoCrawler(object):
             wl_log.info("Probably on the 'detected unusual traffic' page.")
             return False
 
-        # press play button if necessary
-        play_button_xpath = "//button[@aria-label='Play']"
-        try:
-            play_button = self.driver.find_element(By.XPATH, play_button_xpath)
-            ActionChains(self.driver).click(play_button).perform()
-            wl_log.info('Pressed play button.')
-        except:
-            pass
-        sleep(3)
-
         # starting screenshot
         if self.screenshots:
             wl_log.info("Trying to take a screenshot.")
@@ -146,11 +137,11 @@ class VideoCrawler(object):
                 wl_log.error("Cannot get screenshot.")
 
         while True:
-            # try to press play again if necessary again
+            # press play again if necessary
             try:
                 play_button = self.driver.find_element(By.XPATH, play_button_xpath)
                 ActionChains(self.driver).click(play_button).perform()
-                wl_log.info('Pressed play button on subsequent attempt.')
+                wl_log.info('Pressed play button.')
             except:
                 pass
             # try to press the skip ad button
