@@ -146,6 +146,13 @@ class VideoCrawler(object):
                 wl_log.error("Cannot get screenshot.")
 
         while True:
+            # try to press play again if necessary again
+            try:
+                play_button = self.driver.find_element(By.XPATH, play_button_xpath)
+                ActionChains(self.driver).click(play_button).perform()
+                wl_log.info('Pressed play button on subsequent attempt.')
+            except:
+                pass
             # try to press the skip ad button
             try:
                 button = self.driver.find_element(By.XPATH, skip_button_xpath)
