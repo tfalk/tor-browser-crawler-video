@@ -236,11 +236,12 @@ class VideoCrawler(object):
             sleep(10)
 
 class CrawlJob(object):
-    def __init__(self, config, urls):
+    def __init__(self, config, urls, start):
         self.urls = urls
         self.visits = int(config['visits'])
         self.batches = int(config['batches'])
         self.config = config
+        self.start = start - 1
 
         # state
         self.site = 0
@@ -269,7 +270,7 @@ class CrawlJob(object):
 
     @property
     def path(self):
-        attributes = [self.batch, self.site, self.instance]
+        attributes = [self.batch, self.start + self.site, self.instance]
         return join(cm.CRAWL_DIR, "_".join(map(str, attributes)))
 
     def png_file(self, time):
