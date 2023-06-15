@@ -63,7 +63,7 @@ def run():
 
     # Configure crawl
     job_config = ut.get_dict_subconfig(config, args.config, "job")
-    job = crawler_mod.CrawlJob(job_config, url_dict)
+    job = crawler_mod.CrawlJob(job_config, url_dict, args.start)
 
     # Setup stem headless display
     if args.virtual_display:
