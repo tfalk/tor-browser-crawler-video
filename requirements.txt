@@ -3,6 +3,6 @@ scapy
 stem
 psutil
 pyvirtualdisplay
-selenium
+selenium==4.9.1
 tbselenium
 easyprocess
