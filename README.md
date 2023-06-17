@@ -43,7 +43,7 @@ make build
     * Leaving the version number blank to get the latest version of TBB no longer works
 
 * I've changed the triggers for when to end a packet capture. For YouTube, it used to be when the player status was `ended`. For a while I used when the fraction of the video 
-loaded reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 6 minutes, whichever is shorter. It also ends early if it gets the 
+loaded reached 1. Now, for all platforms, it ends after the expected playback duration of the video or after 5 minutes, whichever is shorter. It also ends early if it gets the 
 `detected unusual traffic` page from YouTube or if it doesn't see certain page elements (depending on the platform) within 30 seconds, in which cases it just deletes the whole 
 subdirectory in `results` for that visit.
 
