@@ -153,9 +153,9 @@ class VideoCrawler(object):
                 pass
             loaded_fraction = self.driver.execute_script("return document.getElementById('movie_player').getVideoLoadedFraction()")
             wl_log.debug('Fraction of video loaded: ' + str(loaded_fraction))
-            # end when the video should end, or after 6 minutues, whichever is sooner
+            # end when the video should end, or after 5 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 300:
                 # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
@@ -220,9 +220,9 @@ class VideoCrawler(object):
                 wl_log.error("Cannot get screenshot.")
         while True:
             wl_log.debug('Heartbeat.')
-            # end when the video should end, or after 6 minutues, whichever is sooner
+            # end when the video should end, or after 5 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 360:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 300:
                 # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
