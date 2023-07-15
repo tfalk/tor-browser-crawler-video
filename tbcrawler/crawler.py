@@ -69,7 +69,7 @@ class VideoCrawler(object):
                 visit_successful = self._do_visit()
                 if not visit_successful:
                     ut.delete_dir(self.job.path)
-                    return
+                    continue
             sleep(float(self.job.config['pause_between_loads']))
 
     def _do_visit(self):
