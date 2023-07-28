@@ -100,23 +100,22 @@ class VideoCrawler(object):
         time_0 = time()
         sleep(5)
 
-        # deal with the cookies banner or page only if using the Tor Browser
-        if self.controller is not None:
+        # deal with the cookies banner or page
+        try:
+            reject_button_xpath = "//button[@aria-label='Reject the use of cookies and other data for the purposes described']"
+            reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
+            ActionChains(self.driver).click(reject_button).perform()
+            wl_log.info('Pressed Reject on cookies banner.')
+            sleep(5)
+        except:
             try:
-                reject_button_xpath = "//button[@aria-label='Reject the use of cookies and other data for the purposes described']"
+                reject_button_xpath = "//button[@aria-label='Reject all']"
                 reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
                 ActionChains(self.driver).click(reject_button).perform()
-                wl_log.info('Pressed Reject on cookies banner.')
+                wl_log.info('Pressed Reject on cookies page.')
                 sleep(5)
             except:
-                try:
-                    reject_button_xpath = "//button[@aria-label='Reject all']"
-                    reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
-                    ActionChains(self.driver).click(reject_button).perform()
-                    wl_log.info('Pressed Reject on cookies page.')
-                    sleep(5)
-                except:
-                    pass
+                pass
 
         # try to get an initial player status to see if this Tor
         # exit relay is blocked
