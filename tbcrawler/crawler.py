@@ -81,7 +81,7 @@ class VideoCrawler(object):
                     self.driver.get(self.job.url)
                     if 'youtube' in self.job.url:
                         return self._visit_youtube()
-                    else: # it's Vimeo, Facebook, or Rumble
+                    else: # it's Vimeo, Facebook, Rumble, or Dailymotion
                         return self._visit_other()
             except (cm.HardTimeoutException, TimeoutException):
                 wl_log.error("Visit to %s reached hard timeout!", self.job.url)
@@ -188,6 +188,23 @@ class VideoCrawler(object):
             wl_log.info("Waiting up to 30 seconds to click the play button.")
             play_button_xpath = "//button[@aria-label='Play']"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
+            time_0 = time()
+
+        if 'dailymotion' in self.job.url:
+            sleep(3)
+            # if cookies banner is blocking, deal with it
+            try:
+                continue_without_xpath = '/html/body/div[2]/div/div/div[2]/div/div[1]/button'
+                continue_without_button = self.driver.find_element(By.XPATH, continue_without_xpath)
+                ActionChains(self.driver).click(continue_without_button).perform()
+                wl_log.info('Pressed Continue Without on cookies banner.')
+            except:
+                pass
+            # Dailymotion will autoplay, but we'll wait for some elements to load before we
+            # start the clock, so we don't end the capture too early
+            wl_log.info("Waiting up to 30 seconds to click the play button.")
+            pause_button_xpath = "//button[@aria-label='Pause']"
+            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(By.XPATH, pause_button_xpath))
             time_0 = time()
 
         elif 'facebook' in self.job.url:
