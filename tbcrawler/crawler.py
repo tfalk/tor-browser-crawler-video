@@ -100,7 +100,9 @@ class VideoCrawler(object):
         time_0 = time()
         sleep(5)
 
-        # deal with the cookies banner or page
+        # deal with the cookies banner or page...
+        # pressing TAB five times brings the buttons into view
+        ActionChains(self.driver).send_keys(Keys.TAB * 5).perform()
         try:
             reject_button_xpath = "//button[@aria-label='Reject the use of cookies and other data for the purposes described']"
             reject_button = self.driver.find_element(By.XPATH, reject_button_xpath)
