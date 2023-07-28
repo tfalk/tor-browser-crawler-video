@@ -176,6 +176,13 @@ class VideoCrawler(object):
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
             wl_log.info("Waiting up to 30 seconds to click the play button.")
             play_button_xpath = "//button[@aria-label='Play']"
+            try:
+                WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
+            except:
+                # cookies banner is covering the play button, so deal with it
+                reject_button = self.driver.find_element(By.ID, "onetrust-reject-all-handler")
+                ActionChains(self.driver).click(reject_button).perform()
+            # try again
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
             time_0 = time()
 
