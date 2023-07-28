@@ -181,6 +181,7 @@ class VideoCrawler(object):
                 reject_button = self.driver.find_element(By.ID, "onetrust-reject-all-handler")
                 ActionChains(self.driver).click(reject_button).perform()
                 wl_log.info('Pressed Reject on cookies banner.')
+                sleep(2)
             except:
                 pass
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
