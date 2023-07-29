@@ -48,7 +48,7 @@ make build
 
 * Rumble requires the crawler to press play and there are a lot of ads (even with uBlock Origin for the `run-without-tor` option), which the crawler tries to skip like a human would do after waiting 30 seconds.
 
-* At some point in early 2023, Dailymotion stopped working over Tor; the page loaded but the video player hung on `Loading Ad`, so I removed support for crawling Dailymotion. Before that, Dailymotion would autoplay and didn't show ads when using Tor.
+* At some point in early 2023, Dailymotion stopped working over Tor; the page loaded but the video player hung on `Retreiving Ad`. Without Tor, Dailymotion autoplays after dealing with a cookie banner, and it shows a lot of ads which I don't currently handle.
 
 * I've set the `--snapshot-length` to 71 bytes for tcpdump, so it only saves the Ethernet, IP, and TCP headers and TLS record lengths. We need these for our analysis depending on the threat model used. We don't need the encrypted payloads for anything, and they would require orders-of-magnitude more storage space.
 

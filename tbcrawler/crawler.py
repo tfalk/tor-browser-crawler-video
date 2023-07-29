@@ -249,7 +249,7 @@ class VideoCrawler(object):
             wl_log.debug('Heartbeat.')
             # end when the video should end, or after 5 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 30:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 300:
                 # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
