@@ -202,9 +202,9 @@ class VideoCrawler(object):
                 pass
             # Dailymotion will autoplay, but we'll wait for some elements to load before we
             # start the clock, so we don't end the capture too early
-            wl_log.info("Waiting up to 30 seconds to click the play button.")
-            pause_button_xpath = "//button[@aria-label='Pause']"
-            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable(By.XPATH, pause_button_xpath))
+            wl_log.info("Waiting up to 30 seconds for the Like button to appear.")
+            like_button_xpath = "/html/body/div[1]/div/main/div/div[1]/div/div[1]/div/div[2]/div/div/div[2]/div[2]/button[2]"
+            WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, like_button_xpath)))
             time_0 = time()
 
         elif 'facebook' in self.job.url:
@@ -249,7 +249,7 @@ class VideoCrawler(object):
             wl_log.debug('Heartbeat.')
             # end when the video should end, or after 5 minutues, whichever is sooner
             elapsed_time = time() - time_0
-            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 300:
+            if elapsed_time > self.job.playback_time - 10 or elapsed_time > 30:
                 # ending screenshot
                 if self.screenshots:
                     wl_log.info("Trying to take a screenshot.")
