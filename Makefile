@@ -28,7 +28,7 @@ VOLUMES = \
 DEVICE=ens5
 
 # commandline arguments
-CRAWL_PARAMS=-c walsh -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v --start 10 --end 19
+CRAWL_PARAMS=-c walsh -u ./videos.txt --timeout 10 -s -d ${DEVICE} -v --start 11 --stop 20
 
 # Make routines
 build:
