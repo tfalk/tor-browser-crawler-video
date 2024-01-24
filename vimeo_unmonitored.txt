@@ -3787,7 +3787,6 @@ https://vimeo.com/441302757,300
 https://vimeo.com/200400011,372
 https://vimeo.com/401718092,250
 https://vimeo.com/128023123,532
-https://vimeo.com/702209853,446
 https://vimeo.com/84417920,291
 https://vimeo.com/161620361,248
 https://vimeo.com/751500504,456
@@ -16224,7 +16223,6 @@ https://vimeo.com/117331082,289
 https://vimeo.com/808641696,251
 https://vimeo.com/357910103,535
 https://vimeo.com/160403222,471
-https://vimeo.com/142310759,285
 https://vimeo.com/460646259,270
 https://vimeo.com/89829109,488
 https://vimeo.com/2507683,344
@@ -26080,7 +26078,6 @@ https://vimeo.com/423952315,379
 https://vimeo.com/192814802,384
 https://vimeo.com/221857568,292
 https://vimeo.com/673822943,419
-https://vimeo.com/250129686,415
 https://vimeo.com/672724054,437
 https://vimeo.com/645340265,412
 https://vimeo.com/196160554,270
@@ -61332,7 +61329,6 @@ https://vimeo.com/442191754,342
 https://vimeo.com/85159857,505
 https://vimeo.com/151511079,273
 https://vimeo.com/384358331,595
-https://vimeo.com/169406275,570
 https://vimeo.com/584666346,344
 https://vimeo.com/712669364,598
 https://vimeo.com/94182693,324
