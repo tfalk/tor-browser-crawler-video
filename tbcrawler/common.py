@@ -48,7 +48,10 @@ TBB_DIR = join(BASE_DIR, 'tor-browser')
 VIDEO_LIST = join(BASE_DIR, "videos.txt")
 
 # PCAP capture filter
-DEFAULT_FILTER = 'not tcp port 22'
+DEFAULT_FILTER = ''
+
+#DEFAULT_FILTER = 'not tcp port 22'
+#Filter need to remove SSH traffic if accessing remotely
 
 
 class TimeoutException(Exception):
