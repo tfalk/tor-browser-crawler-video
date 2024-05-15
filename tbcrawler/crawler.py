@@ -186,7 +186,7 @@ class VideoCrawler(object):
                 pass
             # Vimeo doesn't autoplay, so wait for the Play button to appear and start the video
             wl_log.info("Waiting up to 30 seconds to click the play button.")
-            play_button_xpath = "//button[@aria-label='Play']"
+            play_button_xpath = "//button[@data-play-button='true']"
             WebDriverWait(self.driver, 30).until(EC.element_to_be_clickable((By.XPATH, play_button_xpath))).click()
             time_0 = time()
 
